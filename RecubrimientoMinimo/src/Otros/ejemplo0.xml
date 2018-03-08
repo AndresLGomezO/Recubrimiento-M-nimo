@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Nodos>
+<Atributo id="1"> <Nombre>A</Nombre> </Atributo>
+<Atributo id="2"> <Nombre>B</Nombre> </Atributo>
+<Atributo id="3"> <Nombre>C</Nombre> </Atributo>
+<Atributo id="4"> <Nombre>D</Nombre> </Atributo>
+<Atributo id="5"> <Nombre>E</Nombre> </Atributo>
+<Atributo id="6"> <Nombre>F</Nombre> </Atributo>
+<Atributo id="7"> <Nombre>G</Nombre> </Atributo>
+<Atributo id="8"> <Nombre>H</Nombre> </Atributo>
+<Atributo id="9"> <Nombre>I</Nombre> </Atributo>
+<Atributo id="10"> <Nombre>J</Nombre> </Atributo>
+<Atributo id="11"> <Nombre>K</Nombre> </Atributo>
+<Atributo id="12"> <Nombre>L</Nombre> </Atributo>
+<Atributo id="13"> <Nombre>M</Nombre> </Atributo>
+<Atributo id="14"> <Nombre>N</Nombre> </Atributo>
+<Atributo id="15"> <Nombre>P</Nombre> </Atributo>
+<Atributo id="16"> <Nombre>K</Nombre> </Atributo>
+<Atributo id="17"> <Nombre>L</Nombre> </Atributo>
+<Atributo id="18"> <Nombre>M</Nombre> </Atributo>
+<Atributo id="19"> <Nombre>N</Nombre> </Atributo>
+<Atributo id="20"> <Nombre>YY</Nombre> </Atributo>
+
+<DF id="1">  <Izq>A</Izq> <Der>CD</Der> </DF>
+<DF id="2">  <Izq>A</Izq> <Der>C</Der> </DF>
+<DF id="3">  <Izq>AB</Izq> <Der>CD</Der> </DF>
+<DF id="4">  <Izq>AC</Izq> <Der>CD</Der> </DF>
+<DF id="5">  <Izq>AD</Izq> <Der>CD</Der> </DF>
+<DF id="6">  <Izq>A</Izq> <Der>D</Der> </DF>
+<!-- relac nivel 1-->
+<DF id="7">  <Izq>A</Izq> <Der>A</Der> </DF> 
+<DF id="8">  <Izq>A</Izq> <Der>AB</Der> </DF>
+<DF id="9">  <Izq>A</Izq> <Der>AC</Der> </DF>
+<DF id="10">  <Izq>A</Izq> <Der>AD</Der> </DF>
+<DF id="11">  <Izq>CD</Izq> <Der>D</Der> </DF>
+<!-- fin 1-->
+<DF id="12">  <Izq>AB</Izq> <Der>C</Der> </DF>
+<DF id="13">  <Izq>AB</Izq> <Der>D</Der> </DF>
+<DF id="14">  <Izq>AC</Izq> <Der>D</Der> </DF>
+<DF id="15">  <Izq>AD</Izq> <Der>C</Der> </DF>
+<!-- ini relac 2-->
+<DF id="16">  <Izq>A</Izq> <Der>AB</Der> </DF>
+<DF id="17">  <Izq>AB</Izq> <Der>D</Der> </DF>
+<DF id="18">  <Izq>AD</Izq> <Der>C</Der> </DF>
+<!-- fin 2-->
+<DF id="19">  <Izq>ABC</Izq> <Der>CD</Der> </DF>
+<DF id="20">  <Izq>ABD</Izq> <Der>CD</Der> </DF>
+<!-- ini relac 3-->
+<DF id="21">  <Izq>AB</Izq> <Der>ABC</Der> </DF>
+<!-- fin 3-->
+<DF id="22">  <Izq>ABD</Izq> <Der></Der>C</DF>
+<DF id="23">  <Izq>ABC</Izq> <Der></Der>D</DF>
+<!-- in relac  nivel 4-->
+</Nodos>
