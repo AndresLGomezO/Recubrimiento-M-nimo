@@ -142,15 +142,22 @@ public class VentanaPrincipal extends JFrame {
 					//Test cierre raul 
 					
 							
-					System.out.println("Lista de atributos " + NodosXPath.atributtes);
-					System.out.println("Lista de dependencias " + NodosXPath.dependences);
+					System.out.println("Lista de atributos cargados " + NodosXPath.atributtes);
+					System.out.println("Lista de dependencias cargadas " + NodosXPath.dependences);
+					
+					
+					System.out.println("cierre ejemplo:  AB+"); 
+					System.out.println("dependencias : "   +
+							"A,B-->C; D-->E,F; C-->A; B,E-->C; B,C-->D;"
+							+ "C,F-->B,D; A,C,D-->B; C,E-->A,F"
+							); 
 					
 					Set<Atributos> attrs = Atributos.getSet("A,B");
 					Set<FuncDep> fds = FuncDep.getSet("A,B-->C; D-->E,F; C-->A; B,E-->C; B,C-->D;"
 							+ "C,F-->B,D; A,C,D-->B; C,E-->A,F"
 							);
 					
-					System.out.println("cierre ejemplo  " + Operaciones.cierre(attrs, fds) );
+					System.out.println("cierre   " + Operaciones.cierre(attrs, fds) );
 					
 
 				}
