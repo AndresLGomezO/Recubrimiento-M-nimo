@@ -2,9 +2,8 @@ package DatosXpath;
 
 import java.awt.Point;
 import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
-
-import javax.swing.JOptionPane;
 import javax.xml.parsers.*;
 import org.w3c.dom.*;
 import javax.xml.xpath.*;
@@ -15,7 +14,13 @@ import Grafo.PanelGrafo;
 
 public class NodosXPath extends PanelGrafo {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	public static List<Nodo> nodos;
+	public static ArrayList<String> atributtes;
+	public static ArrayList<String> dependences;
 
 	static int contxd;
 	static int contyd;
@@ -26,6 +31,7 @@ public class NodosXPath extends PanelGrafo {
 
 		try {
 
+			atributtes = new ArrayList<String>();
 			DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
 			DocumentBuilder db = dbf.newDocumentBuilder();
 			Document d = db.parse(xMLPath);
@@ -36,13 +42,12 @@ public class NodosXPath extends PanelGrafo {
 
 				for (int i = 0; i <= at.getLength(); i++) {
 					VentanaPrincipal.PonerTextoAtributos(xp.compile("./Nombre").evaluate(at.item(i)));
+					atributtes.add(xp.compile("./Nombre").evaluate(at.item(i)));
 					// raul
+					// System.out.println("elemetos " + atributtes.get(i));
 				}
 
 			}
-			// else if (at.getLength() == 0) {
-			//
-			// }
 
 		} catch (Exception e) {
 			System.out.println("LeerAtributos " + e.getMessage());
@@ -103,10 +108,6 @@ public class NodosXPath extends PanelGrafo {
 					break;
 				}
 			}
-
-			for (String nombre : nodosI)
-				System.out.println("el nombre izq es " + nombre);
-
 			return m;
 		} else {
 			// System.out.println("No estaba "+ Nombre); // llenar
@@ -155,7 +156,7 @@ public class NodosXPath extends PanelGrafo {
 			NodeList nl = (NodeList) xp.compile("//DF").evaluate(d, XPathConstants.NODESET);
 
 			if (nl.getLength() > 0) {
-
+				dependences = new ArrayList<String>();
 				for (int i = 0; i <= nl.getLength(); i++) {
 
 					Nodo ii = new Nodo();
@@ -166,13 +167,10 @@ public class NodosXPath extends PanelGrafo {
 							xp.compile("./Der").evaluate(nl.item(i)));
 					String nombreIz = xp.compile("./Izq").evaluate(nl.item(i));
 					String nombreDer = xp.compile("./Der").evaluate(nl.item(i));
-
-					System.out.println(" implicantes " + nombreIz + "-->" + nombreDer);
-
+					// raul
+					dependences.add(nombreIz + "-->" + nombreDer);
 					ii = VerificarNodoI(nombreIz);
-
 					dd = VerificarNodoD(nombreDer);
-
 					AgregarArco(ii, dd);
 
 				}

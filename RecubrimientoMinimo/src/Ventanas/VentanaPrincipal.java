@@ -4,7 +4,7 @@ import java.awt.BorderLayout;
 import DatosXpath.NodosXPath;
 
 import java.io.File;
-
+import java.util.Set;
 import java.awt.EventQueue;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -13,11 +13,10 @@ import javax.swing.JButton;
 import javax.swing.JFileChooser;
 
 import Grafo.*;
+import operaciones.*;
 import java.awt.event.ActionListener;
-
 import java.awt.event.ActionEvent;
 import javax.swing.filechooser.*;
-
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 import javax.swing.JScrollPane;
@@ -27,8 +26,6 @@ import javax.swing.SwingConstants;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
-import java.awt.Point;
-
 import javax.swing.JTable;
 import javax.swing.JTabbedPane;
 import javax.swing.GroupLayout.Alignment;
@@ -39,6 +36,10 @@ import java.awt.Rectangle;
 
 public class VentanaPrincipal extends JFrame {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
 	public JButton CargarArchivoBtn = new JButton("Cargar XML");
 	private static String[] ColumnasDF = { "ID", "Implicante", "Signo", "Implicado" };
@@ -48,6 +49,11 @@ public class VentanaPrincipal extends JFrame {
 	static DefaultTableModel modeloDF = new DefaultTableModel(dataDF, ColumnasDF);
 	static DefaultTableModel modeloAt = new DefaultTableModel(dataAt, ColumnasAt);
 	private static JTable DFTable = new JTable(modeloDF) {
+		/**
+		 * 
+		 */
+		private static final long serialVersionUID = 1L;
+
 		public boolean isCellEditable(int row, int column) {
 			return false;
 		}
@@ -61,6 +67,11 @@ public class VentanaPrincipal extends JFrame {
 	 */
 
 	private static JTable AtributosTable = new JTable(modeloAt) {
+		/**
+		 * 
+		 */
+		private static final long serialVersionUID = 1L;
+
 		public boolean isCellEditable(int row, int column) {
 			return false;
 		}
@@ -123,10 +134,24 @@ public class VentanaPrincipal extends JFrame {
 				if (returnValue == JFileChooser.APPROVE_OPTION) {
 					VentanaPrincipal.BorrarDatos();
 
-					// ini program raul
+					
 					File XMLPath = fl.getSelectedFile();
 					a = NodosXPath.LeerAtributos(XMLPath);
 					b = NodosXPath.LeerDependencias(XMLPath);
+					
+					//Test cierre raul 
+					
+							
+					System.out.println("Lista de atributos " + NodosXPath.atributtes);
+					System.out.println("Lista de dependencias " + NodosXPath.dependences);
+					
+					Set<Atributos> attrs = Atributos.getSet("A,B");
+					Set<FuncDep> fds = FuncDep.getSet("A,B-->C; D-->E,F; C-->A; B,E-->C; B,C-->D;"
+							+ "C,F-->B,D; A,C,D-->B; C,E-->A,F"
+							);
+					
+					System.out.println("cierre ejemplo  " + Operaciones.cierre(attrs, fds) );
+					
 
 				}
 			}
@@ -412,9 +437,9 @@ public class VentanaPrincipal extends JFrame {
 		int ID = modeloAt.getRowCount()+1;
 		modeloAt.addRow(new Object[]{ID, Atrib});
 		
-		System.out.println("VentanaPrincipal.PonerTextoAtributos " + Atrib 
-		+ " dato " + modeloAt.getColumnName(0)
-				);
+//		System.out.println("VentanaPrincipal.PonerTextoAtributos " + Atrib 
+//		+ " dato " + modeloAt.getColumnName(0)
+//				);
 	}
 
 	public static void TamanoPanel() {
