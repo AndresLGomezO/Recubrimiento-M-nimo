@@ -139,8 +139,14 @@ public class VentanaPrincipal extends JFrame {
 					b = NodosXPath.LeerDependencias(XMLPath);
 
 					// Test cierre raul
-
-					System.out.println("Lista de atributos cargados " + NodosXPath.atributtes);
+                    String [] dependXML = new String [NodosXPath.dependences.size()]; 
+                    dependXML= NodosXPath.dependences.toArray(dependXML); 
+                    
+                    
+                    for (String s : dependXML) 
+                    System.out.println("arreglo nuevo " + s); 
+                    
+					System.out.println("Lista de atributos cargados " + NodosXPath.atributtes);			
 					System.out.println("Lista de dependencias cargadas " + NodosXPath.dependences);
 
 					System.out.println("cierre ejemplo:  AB+");
@@ -168,6 +174,11 @@ public class VentanaPrincipal extends JFrame {
 					                   + "B,C-->D; " 
 									   + "B,C-->C,E");
 					System.out.println("Paso L0= " + Operaciones.l0(depend));
+					
+					System.out.println("L0 para dependencias cargadas ");
+					
+					Set<FuncDep> fdCarg = FuncDep.getSet(dependXML); 
+					System.out.println(" L0= " + Operaciones.l0(fdCarg));
 
 				}
 			}
