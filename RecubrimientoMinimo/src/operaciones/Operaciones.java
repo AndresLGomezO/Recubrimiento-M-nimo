@@ -3,10 +3,13 @@ package operaciones;
 
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
 import javax.naming.spi.DirStateFactory.Result;
+
+import DatosXpath.NodosXPath;
 
 
 public class Operaciones {
@@ -157,4 +160,96 @@ public class Operaciones {
 		
 		return fds;
 	}
+	
+	
+	public static Set<Atributos> TodasLasLlaves(){
+		System.out.println("TODAS LAS LLAVES  ");
+		Set<Atributos> all = Operaciones.reduction(NodosXPath.attrs);
+		Set<Atributos> keys = new HashSet<>();
+	   Iterator<Atributos> It2 = all.iterator();
+		while (It2.hasNext()) {
+	   	   Set<Atributos> n = new HashSet<>();
+		   n.add(It2.next());
+		   if(Operaciones.cierre(n, NodosXPath.fds).equals(NodosXPath.attrs))
+		      {
+			   System.out.println("Llave agregada " + n);
+		        keys.addAll(n);
+		      } 
+	   }
+	    //The whole relation is always a superkey!!!
+	    keys.addAll(NodosXPath.attrs);
+	    return keys;
+	  }
+		
+
+		public static Set<Atributos> reduction(Set<Atributos> Atribut){
+			    //returns a new set
+			 Set<Atributos> r = new HashSet<>();
+			 Set<Atributos> New = new HashSet<>();
+			 New.addAll(Atribut);
+			Iterator<Atributos> It1 = New.iterator();
+			while(It1.hasNext()) {   
+				
+			    	Set<Atributos> c = new HashSet<>();
+			    	c.addAll(New);
+			    	
+			    	
+			    	c.remove(It1.next());
+			    	
+			    	if(!c.isEmpty()){
+			    			r.addAll(c);
+			    			Set<Atributos> re = new HashSet<>();
+			    			re.addAll(Operaciones.reduction(c));
+			    			if(!r.containsAll(re)) {
+			    				r.addAll(re);
+			    				}
+			    			}
+			    		}
+			    return r;
+			    }
+		
+
+		 
+		public static Set<Atributos> LlavesCandidatas(){
+			Set<Atributos> sk = Operaciones.TodasLasLlaves();
+			Set<Atributos> cand = new HashSet<>();
+		    Iterator<Atributos> i = sk.iterator();
+		    boolean flag = false;
+		    while(i.hasNext()){
+		    	Set<Atributos> a = new HashSet<>();
+		    	Atributos HN = new Atributos(i.next().getnombre());
+		    	if (!HN.equals("")) {
+		    
+		    a.add(HN);
+		    
+		    Set<Atributos> c = new HashSet<>();
+		    c.addAll(Operaciones.reduction(a));
+		    
+		    System.out.println("Recuction C " + c);
+		      Iterator<Atributos> j = c.iterator();
+		      flag = true;
+		      while(j.hasNext()){
+		    	  Atributos HM = new Atributos(j.next().getnombre());
+		    	  if (!HM.equals("")) {
+		    	Set<Atributos> d = new HashSet<>();
+		    	d.add(HM);
+		    	System.out.println("Cierre " + Operaciones.cierre(d, NodosXPath.fds));
+		        if(Operaciones.cierre(d, NodosXPath.fds).equals(NodosXPath.attrs)) {
+		        	
+		        	System.out.println("Llave candidata " + d);
+		          flag = false;
+		        }
+		    	  }
+		      
+		      }
+		    }
+		      if(flag == true)
+		        cand.addAll(a);
+
+		    }
+
+		    return cand;
+		  }
+
+	
 }

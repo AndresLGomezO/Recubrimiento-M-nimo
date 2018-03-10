@@ -122,6 +122,7 @@ public class VentanaPrincipal extends JFrame {
 		CargarArchivoBtn.setBackground(new Color(152, 251, 152));
 		
 		JButton btnRmin = new JButton("Cubrimiento");
+		JButton btnClaves = new JButton("Llaves Candidatas");
 		
 		CargarArchivoBtn.addActionListener(new ActionListener() {
 
@@ -136,6 +137,7 @@ public class VentanaPrincipal extends JFrame {
 				if (returnValue == JFileChooser.APPROVE_OPTION) {
 					VentanaPrincipal.BorrarDatos();
 					btnRmin.setEnabled(true);
+					btnClaves.setEnabled(true);
 
 					File XMLPath = fl.getSelectedFile();
 					a = NodosXPath.LeerAtributos(XMLPath);
@@ -455,9 +457,19 @@ public class VentanaPrincipal extends JFrame {
 		btnRmin.setEnabled(false);
 		contentPane.add(btnRmin);
 
-		JButton btnClaves = new JButton("Llaves Candidatas");
+		
+		btnClaves.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+				JOptionPane.showMessageDialog (null, 
+						  "Superclave: " + Operaciones.LlavesCandidatas() ,
+						  "Llaves Candidatas" , JOptionPane.INFORMATION_MESSAGE);
+				
+			}
+		});
 		btnClaves.setFont(new Font("Calibri", Font.PLAIN, 11));
 		btnClaves.setBounds(668, 49, 134, 23);
+		btnClaves.setEnabled(false); 
 		contentPane.add(btnClaves);
 
 		JButton btnCierre = new JButton("Clausura +");

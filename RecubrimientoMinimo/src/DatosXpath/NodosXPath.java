@@ -3,11 +3,16 @@ package DatosXpath;
 import java.awt.Point;
 import java.io.File;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+
 import javax.xml.parsers.*;
 import org.w3c.dom.*;
 import javax.xml.xpath.*;
 import Ventanas.VentanaPrincipal;
+import operaciones.Atributos;
+import operaciones.FuncDep;
 import Grafo.Arco;
 import Grafo.Nodo;
 import Grafo.PanelGrafo;
@@ -21,6 +26,10 @@ public class NodosXPath extends PanelGrafo {
 	public static List<Nodo> nodos;
 	public static ArrayList<String> atributtes;
 	public static ArrayList<String> dependences;
+	public static Set<Atributos> attrs = new HashSet<>();
+	public static Set<FuncDep> fds = new HashSet<>();				
+	
+	
 
 	static int contxd;
 	static int contyd;
@@ -42,7 +51,9 @@ public class NodosXPath extends PanelGrafo {
 
 				for (int i = 0; i <= at.getLength(); i++) {
 					VentanaPrincipal.PonerTextoAtributos(xp.compile("./Nombre").evaluate(at.item(i)));
+					
 					atributtes.add(xp.compile("./Nombre").evaluate(at.item(i)));
+					attrs.add(Atributos.of(xp.compile("./Nombre").evaluate(at.item(i))));
 					// raul
 					// System.out.println("elemetos " + atributtes.get(i));
 				}
@@ -99,7 +110,7 @@ public class NodosXPath extends PanelGrafo {
 	public static Nodo VerificarNodoI(String Nombre) {
 		Nodo m = new Nodo();
 		if (Grafo.PanelGrafo.nodosI.contains(Nombre)) {
-			// System.out.println("NodosXpath.VerificarNodoI Si está " + Nombre + " tam "
+			// System.out.println("NodosXpath.VerificarNodoI Si estÃ¡ " + Nombre + " tam "
 			// +Grafo.PanelGrafo.nodos.size() );
 
 			for (int i = 0; i <= Grafo.PanelGrafo.nodos.size(); i++) {
@@ -169,6 +180,8 @@ public class NodosXPath extends PanelGrafo {
 					String nombreDer = xp.compile("./Der").evaluate(nl.item(i));
 					// raul
 					dependences.add(nombreIz + "-->" + nombreDer);
+					fds.add(FuncDep.of(nombreIz, nombreDer));
+					
 					ii = VerificarNodoI(nombreIz);
 					dd = VerificarNodoD(nombreDer);
 					AgregarArco(ii, dd);
@@ -185,5 +198,6 @@ public class NodosXPath extends PanelGrafo {
 
 		return true;
 	}
+	
 
 }
