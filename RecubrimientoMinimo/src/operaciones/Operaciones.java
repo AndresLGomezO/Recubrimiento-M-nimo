@@ -6,6 +6,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import javax.naming.spi.DirStateFactory.Result;
+
 
 public class Operaciones {
 
@@ -131,5 +133,28 @@ public class Operaciones {
 		
 		return fds;
 
+	}
+	public static Set<FuncDep> getl2(Set<FuncDep> fds) {
+		for (FuncDep fd : fds) {
+			
+			List<Atributos> leftList = new ArrayList<>();
+			
+			for (Atributos a : fd.left) {
+				List<Atributos> rightList = new ArrayList<>(fd.getRight());
+				Atributos rightAttribute = rightList.get(0);
+				rightList.remove(a);
+				
+				Set<Atributos> newLeftSideSet = new HashSet<Atributos>(rightList);
+				Set<Atributos> cierreSet = cierre(newLeftSideSet, fds);
+				if (!cierreSet.contains(rightAttribute)) {
+					
+					leftList.add(a);
+					rightList.add(a);
+				}
+			}
+		}
+		
+		
+		return fds;
 	}
 }
