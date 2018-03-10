@@ -134,31 +134,48 @@ public class VentanaPrincipal extends JFrame {
 				if (returnValue == JFileChooser.APPROVE_OPTION) {
 					VentanaPrincipal.BorrarDatos();
 
-					
 					File XMLPath = fl.getSelectedFile();
 					a = NodosXPath.LeerAtributos(XMLPath);
 					b = NodosXPath.LeerDependencias(XMLPath);
-					
-					//Test cierre raul 
-					
-							
-					System.out.println("Lista de atributos cargados " + NodosXPath.atributtes);
+
+					// Test cierre raul
+                    String [] dependXML = new String [NodosXPath.dependences.size()]; 
+                    dependXML= NodosXPath.dependences.toArray(dependXML); 
+                    
+                    
+                    for (String s : dependXML) 
+                    System.out.println("arreglo nuevo " + s); 
+                    
+					System.out.println("Lista de atributos cargados " + NodosXPath.atributtes);			
 					System.out.println("Lista de dependencias cargadas " + NodosXPath.dependences);
-					
-					
-					System.out.println("cierre ejemplo:  AB+"); 
-					System.out.println("dependencias : "   +
-							"A,B-->C; D-->E,F; C-->A; B,E-->C; B,C-->D;"
-							+ "C,F-->B,D; A,C,D-->B; C,E-->A,F"
-							); 
-					
+
+					System.out.println("cierre ejemplo:  AB+");
+					System.out.println("dependencias : " + "A,B-->C; D-->E,F; C-->A; B,E-->C; B,C-->D;"
+							+ "C,F-->B,D; A,C,D-->B; C,E-->A,F");
+
 					Set<Atributos> attrs = Atributos.getSet("A,B");
-					Set<FuncDep> fds = FuncDep.getSet("A,B-->C; D-->E,F; C-->A; B,E-->C; B,C-->D;"
-							+ "C,F-->B,D; A,C,D-->B; C,E-->A,F"
-							);
+					Set<FuncDep> fds = FuncDep
+							.getSet("A,B-->C; D-->E,F; C-->A; B,E-->C; B,C-->D;" + "C,F-->B,D; A,C,D-->B; C,E-->A,F");
+
+					System.out.println("cierre   " + Operaciones.cierre(attrs, fds));
 					
-					System.out.println("cierre   " + Operaciones.cierre(attrs, fds) );
+					// Test L0 raul
+					System.out.println("Paso L0, ejemplo . Dependences= "
+							   + "A-->B;" 
+			                   + "A,B-->CB,C;" 
+							   + "A-->BC; " 
+			                   + "B,C-->D; " 
+							   + "B,C-->C,E");
 					
+					Set<FuncDep> depend = FuncDep.getSet(
+							             "A-->B;" 
+					                   + "A,B-->CB,C; " 
+									   + "A-->BC; " 
+					                   + "B,C-->D; " 
+									   + "B,C-->C,E");
+					System.out.println("Paso L0= " + Operaciones.l0(depend));
+					
+					System.out.println("L0 para dependencias cargadas ");
 					
 					System.out.println("Ejemplo L1"); 
 					System.out.println("dependencias : "   +
@@ -172,8 +189,10 @@ public class VentanaPrincipal extends JFrame {
 							);
 					
 					System.out.println("L2   " + Operaciones.getL1(fds1));
-					
-					
+
+					Set<FuncDep> fdCarg = FuncDep.getSet(dependXML); 
+					System.out.println(" L0= " + Operaciones.l0(fdCarg));
+
 
 				}
 			}
@@ -456,12 +475,12 @@ public class VentanaPrincipal extends JFrame {
 	}
 
 	public static void PonerTextoAtributos(String Atrib) {
-		int ID = modeloAt.getRowCount()+1;
-		modeloAt.addRow(new Object[]{ID, Atrib});
-		
-//		System.out.println("VentanaPrincipal.PonerTextoAtributos " + Atrib 
-//		+ " dato " + modeloAt.getColumnName(0)
-//				);
+		int ID = modeloAt.getRowCount() + 1;
+		modeloAt.addRow(new Object[] { ID, Atrib });
+
+		// System.out.println("VentanaPrincipal.PonerTextoAtributos " + Atrib
+		// + " dato " + modeloAt.getColumnName(0)
+		// );
 	}
 
 	public static void TamanoPanel() {

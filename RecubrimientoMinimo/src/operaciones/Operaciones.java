@@ -75,7 +75,6 @@ public class Operaciones {
 					if (!noExtrano) {
 							//Atributo extraño
 						extranos.add(a);
-
 					}
 
 				}
@@ -115,7 +114,22 @@ public class Operaciones {
 		return result;
 	}
 	
-	
-	
-	
+	public static Set<FuncDep> l0(Set<FuncDep> fds) {
+		Set<FuncDep> toRemove = new HashSet<>();
+		Set<FuncDep> toAdd = new HashSet<>();
+
+		for (FuncDep fd : fds) {
+			if (fd.right.size() > 1) {
+				for (Atributos a : fd.right) {
+					toAdd.add(new FuncDep.Builder().left(fd.left).right(a).build());
+				}
+				toRemove.add(fd);
+			}
+		}
+		fds.addAll(toAdd);
+		fds.removeAll(toRemove);
+		
+		return fds;
+
+	}
 }
