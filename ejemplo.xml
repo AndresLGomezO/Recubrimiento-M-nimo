@@ -1,0 +1,16 @@
+<nodos>
+<Atributo id="1"> <Nombre>A</Nombre> </Atributo>
+<Atributo id="2"> <Nombre>B</Nombre> </Atributo>
+<Atributo id="3"> <Nombre>C</Nombre> </Atributo>
+<Atributo id="4"> <Nombre>D</Nombre> </Atributo>
+<Atributo id="5"> <Nombre>E</Nombre> </Atributo>
+<Atributo id="6"> <Nombre>F</Nombre> </Atributo>
+<DF id="1">  <Izq>A,B</Izq> <Der>C</Der> </DF>
+<DF id="2">  <Izq>D</Izq> <Der>E,F</Der> </DF>
+<DF id="3">  <Izq>C</Izq> <Der>A</Der> </DF>
+<DF id="4">  <Izq>B,E</Izq> <Der>C</Der> </DF>
+<DF id="5">  <Izq>B,C</Izq> <Der>D</Der> </DF>
+<DF id="6">  <Izq>C,F</Izq> <Der>B,D</Der> </DF>
+<DF id="7">  <Izq>A,C,D</Izq> <Der>B</Der> </DF>
+<DF id="8">  <Izq>C,E</Izq> <Der>A,F</Der> </DF>
+</nodos>

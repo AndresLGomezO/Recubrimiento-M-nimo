@@ -115,12 +115,14 @@ public class VentanaPrincipal extends JFrame {
 		contentPane = new JPanel();
 		contentPane.setBackground(Color.WHITE);
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
-
+		
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		CargarArchivoBtn.setFont(new Font("Calibri", Font.PLAIN, 11));
 		CargarArchivoBtn.setBackground(new Color(152, 251, 152));
-
+		
+		JButton btnRmin = new JButton("Cubrimiento");
+		
 		CargarArchivoBtn.addActionListener(new ActionListener() {
 
 			public void actionPerformed(ActionEvent arg0) {
@@ -133,6 +135,7 @@ public class VentanaPrincipal extends JFrame {
 
 				if (returnValue == JFileChooser.APPROVE_OPTION) {
 					VentanaPrincipal.BorrarDatos();
+					btnRmin.setEnabled(true);
 
 					File XMLPath = fl.getSelectedFile();
 					a = NodosXPath.LeerAtributos(XMLPath);
@@ -177,18 +180,8 @@ public class VentanaPrincipal extends JFrame {
 					
 					System.out.println("L0 para dependencias cargadas ");
 					
-					System.out.println("Ejemplo L1"); 
-					System.out.println("dependencias : "   +
-							"A,B-->C; D-->E,F; C-->A; B,E-->C; B,C-->D;"
-							+ "C,F-->B,D; A,C,D-->B; C,E-->A,F"
-							); 
 					
-					
-					Set<FuncDep> fds1 = FuncDep.getSet("A,B-->C; D-->E; D-->F; C-->A; B,E-->C; B,C-->D;"
-							+ "C,F-->B; C,F-->D;  A,C,D-->B; C,E-->A; C,E-->F"
-							);
-					
-					System.out.println("L2   " + Operaciones.getL1(fds1));
+				
 
 					Set<FuncDep> fdCarg = FuncDep.getSet(dependXML); 
 					System.out.println(" L0= " + Operaciones.l0(fdCarg));
@@ -346,7 +339,7 @@ public class VentanaPrincipal extends JFrame {
 
 		JPanel panel_2 = new JPanel();
 
-		tabbedPane.addTab("Gr�fico", null, panel_2, null);
+		tabbedPane.addTab("Gráfico", null, panel_2, null);
 
 		panel_2.setLayout(null);
 		panel_2.setAutoscrolls(true);
@@ -434,10 +427,33 @@ public class VentanaPrincipal extends JFrame {
 
 		contentPane.add(lblAaa);
 
-		JButton btnFnbc = new JButton("FNBC");
-		btnFnbc.setFont(new Font("Calibri", Font.PLAIN, 11));
-		btnFnbc.setBounds(451, 49, 94, 23);
-		contentPane.add(btnFnbc);
+		
+		//JButton btnRmin = new JButton("Cubrimiento");
+		btnRmin.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+				  String [] dependXML = new String [NodosXPath.dependences.size()]; 
+                  dependXML= NodosXPath.dependences.toArray(dependXML); 
+                  
+                  Set<FuncDep> fdCarg = FuncDep.getSet(dependXML); 
+                  Set<FuncDep> L0 = Operaciones.l0(fdCarg);
+				  System.out.println(" L0= " + L0);
+				  Set<FuncDep> L1 = Operaciones.getL1(L0);
+				  System.out.println(" L1= " + L1);
+				  Set<FuncDep> L2 = Operaciones.getl2(L1);
+				  System.out.println(" L2= " + L2);
+				  
+				  JOptionPane.showMessageDialog (null, 
+						  "L0: " + L0.toString() + '\n' +
+						  "L1: " + L1.toString()  + '\n' +
+						  "L2: " + L2.toString(),
+						  "Recubrimiento Mínimo" , JOptionPane.INFORMATION_MESSAGE);
+			}
+		});
+		btnRmin.setFont(new Font("Calibri", Font.PLAIN, 11));
+		btnRmin.setBounds(451, 49, 94, 23);
+		btnRmin.setEnabled(false);
+		contentPane.add(btnRmin);
 
 		JButton btnClaves = new JButton("Llaves Candidatas");
 		btnClaves.setFont(new Font("Calibri", Font.PLAIN, 11));
