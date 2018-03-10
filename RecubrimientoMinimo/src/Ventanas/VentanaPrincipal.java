@@ -159,6 +159,21 @@ public class VentanaPrincipal extends JFrame {
 					
 					System.out.println("cierre   " + Operaciones.cierre(attrs, fds) );
 					
+					
+					System.out.println("Ejemplo L1"); 
+					System.out.println("dependencias : "   +
+							"A,B-->C; D-->E,F; C-->A; B,E-->C; B,C-->D;"
+							+ "C,F-->B,D; A,C,D-->B; C,E-->A,F"
+							); 
+					
+					
+					Set<FuncDep> fds1 = FuncDep.getSet("A,B-->C; D-->E; D-->F; C-->A; B,E-->C; B,C-->D;"
+							+ "C,F-->B; C,F-->D;  A,C,D-->B; C,E-->A; C,E-->F"
+							);
+					
+					System.out.println("L2   " + Operaciones.getL1(fds1));
+					
+					
 
 				}
 			}
@@ -312,7 +327,7 @@ public class VentanaPrincipal extends JFrame {
 
 		JPanel panel_2 = new JPanel();
 
-		tabbedPane.addTab("Gráfico", null, panel_2, null);
+		tabbedPane.addTab("Grï¿½fico", null, panel_2, null);
 
 		panel_2.setLayout(null);
 		panel_2.setAutoscrolls(true);
