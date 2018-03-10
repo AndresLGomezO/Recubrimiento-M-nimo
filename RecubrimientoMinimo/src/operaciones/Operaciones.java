@@ -129,7 +129,7 @@ public class Operaciones {
 					toAdd.add(new FuncDep.Builder().left(fd.left).right(a).build());
 				}
 				toRemove.add(fd);
-			}
+			} 
 		}
 		fds.addAll(toAdd);
 		fds.removeAll(toRemove);
@@ -138,53 +138,48 @@ public class Operaciones {
 
 	}
 	public static Set<FuncDep> getl2(Set<FuncDep> fds) {
+		
+		Set<FuncDep> FINAL = new HashSet<>();
+		FINAL.addAll(fds);
 		for (FuncDep fd : fds) {
-			
-			List<Atributos> leftList = new ArrayList<>();
-			
-			for (Atributos a : fd.left) {
-				List<Atributos> rightList = new ArrayList<>(fd.getRight());
-				Atributos rightAttribute = rightList.get(0);
-				rightList.remove(a);
-				
-				Set<Atributos> newLeftSideSet = new HashSet<Atributos>(rightList);
-				Set<Atributos> cierreSet = cierre(newLeftSideSet, fds);
-				if (!cierreSet.contains(rightAttribute)) {
-					
-					leftList.add(a);
-					rightList.add(a);
+			Set<FuncDep> toRemove = new HashSet<>();
+			toRemove.addAll(fds);
+			toRemove.remove(fd);
+			System.out.println("Cierre " + Operaciones.cierre(fd.getLeft(), toRemove));
+				if (Operaciones.cierre(fd.getLeft(), toRemove).containsAll(fd.getRight()) ){
+					FINAL.remove(fd);
 				}
 			}
+		return FINAL;
 		}
 		
-		
-		return fds;
-	}
+
 	
 	
-	public static Set<Atributos> TodasLasLlaves(){
+	
+	public static Set<Set<Atributos>> TodasLasLlaves(){
 		System.out.println("TODAS LAS LLAVES  ");
-		Set<Atributos> all = Operaciones.reduction(NodosXPath.attrs);
-		Set<Atributos> keys = new HashSet<>();
-	   Iterator<Atributos> It2 = all.iterator();
+		Set<Set<Atributos>> all = Operaciones.reduction(NodosXPath.attrs);
+		Set<Set<Atributos>> keys = new HashSet<Set<Atributos>>();
+	   Iterator<Set<Atributos>> It2 = all.iterator();
 		while (It2.hasNext()) {
 	   	   Set<Atributos> n = new HashSet<>();
-		   n.add(It2.next());
+		   n.addAll(It2.next());
 		   if(Operaciones.cierre(n, NodosXPath.fds).equals(NodosXPath.attrs))
 		      {
 			   System.out.println("Llave agregada " + n);
-		        keys.addAll(n);
+		        keys.add(n);
 		      } 
 	   }
 	    //The whole relation is always a superkey!!!
-	    keys.addAll(NodosXPath.attrs);
+	    keys.add(NodosXPath.attrs);
 	    return keys;
 	  }
 		
 
-		public static Set<Atributos> reduction(Set<Atributos> Atribut){
+		public static Set<Set<Atributos>> reduction(Set<Atributos> Atribut){
 			    //returns a new set
-			 Set<Atributos> r = new HashSet<>();
+			 Set<Set<Atributos>> r = new HashSet<Set<Atributos>>();
 			 Set<Atributos> New = new HashSet<>();
 			 New.addAll(Atribut);
 			Iterator<Atributos> It1 = New.iterator();
@@ -197,8 +192,8 @@ public class Operaciones {
 			    	c.remove(It1.next());
 			    	
 			    	if(!c.isEmpty()){
-			    			r.addAll(c);
-			    			Set<Atributos> re = new HashSet<>();
+			    			r.add(c);
+			    			Set<Set<Atributos>> re = new HashSet<Set<Atributos>>();
 			    			re.addAll(Operaciones.reduction(c));
 			    			if(!r.containsAll(re)) {
 			    				r.addAll(re);
@@ -210,46 +205,53 @@ public class Operaciones {
 		
 
 		 
-		public static Set<Atributos> LlavesCandidatas(){
-			Set<Atributos> sk = Operaciones.TodasLasLlaves();
-			Set<Atributos> cand = new HashSet<>();
-		    Iterator<Atributos> i = sk.iterator();
+		public static Set<Set<Atributos>> LlavesCandidatas(){
+			Set<Set<Atributos>> sk = new HashSet<Set<Atributos>>();
+			sk.addAll(Operaciones.TodasLasLlaves());
+			Set<Set<Atributos>> cand = new HashSet<Set<Atributos>>();
+		    Iterator<Set<Atributos>> i = sk.iterator();
 		    boolean flag = false;
 		    while(i.hasNext()){
-		    	Set<Atributos> a = new HashSet<>();
-		    	Atributos HN = new Atributos(i.next().getnombre());
-		    	if (!HN.equals("")) {
+		    	Set<Atributos> a = i.next();
+		    	
 		    
-		    a.add(HN);
-		    
-		    Set<Atributos> c = new HashSet<>();
-		    c.addAll(Operaciones.reduction(a));
-		    
-		    System.out.println("Recuction C " + c);
-		      Iterator<Atributos> j = c.iterator();
+		    Set<Set<Atributos>> c = Operaciones.reduction(a);
+		     
+		   	    
+		  
+		      Iterator<Set<Atributos>> j = c.iterator();
+		     
 		      flag = true;
 		      while(j.hasNext()){
-		    	  Atributos HM = new Atributos(j.next().getnombre());
-		    	  if (!HM.equals("")) {
-		    	Set<Atributos> d = new HashSet<>();
-		    	d.add(HM);
-		    	System.out.println("Cierre " + Operaciones.cierre(d, NodosXPath.fds));
+		    	
+		    	 
+		    	  
+		    	Set<Atributos> d = j.next();
+		    	
+		    	      
+		    
 		        if(Operaciones.cierre(d, NodosXPath.fds).equals(NodosXPath.attrs)) {
 		        	
-		        	System.out.println("Llave candidata " + d);
+		        	System.out.println("Llave candidata " + a);
 		          flag = false;
-		        }
-		    	  }
+		        
+		    	  
 		      
 		      }
-		    }
-		      if(flag == true)
-		        cand.addAll(a);
+		      }
+		      if(flag == true) {
+		        cand.add(a);
 
+		    }
+		    
+		
 		    }
 
 		    return cand;
-		  }
+		    
+		
+		}
+
 
 	
 }

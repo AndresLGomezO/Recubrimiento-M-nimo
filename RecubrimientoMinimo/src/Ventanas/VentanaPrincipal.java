@@ -33,6 +33,7 @@ import java.awt.event.MouseWheelListener;
 import java.awt.event.MouseWheelEvent;
 import java.awt.Dimension;
 import java.awt.Rectangle;
+import javax.swing.JTextArea;
 
 public class VentanaPrincipal extends JFrame {
 
@@ -409,6 +410,21 @@ public class VentanaPrincipal extends JFrame {
 		table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 		table.setBounds(10, 40, 354, 255);
 		panel_1.add(table);
+		
+		JTextArea textArea = new JTextArea();
+		textArea.setLineWrap(true);
+		textArea.setAutoscrolls(false);
+		textArea.setBounds(376, 39, 406, 256);
+		panel_1.add(textArea);
+		
+		JLabel lblLlaves = new JLabel("Llaves");
+		lblLlaves.setOpaque(true);
+		lblLlaves.setHorizontalAlignment(SwingConstants.CENTER);
+		lblLlaves.setForeground(Color.WHITE);
+		lblLlaves.setFont(new Font("Dialog", Font.PLAIN, 15));
+		lblLlaves.setBackground(Color.RED);
+		lblLlaves.setBounds(375, 13, 411, 18);
+		panel_1.add(lblLlaves);
 
 		CargarArchivoBtn.setBounds(10, 49, 94, 23);
 		contentPane.add(CargarArchivoBtn);
@@ -460,10 +476,14 @@ public class VentanaPrincipal extends JFrame {
 		
 		btnClaves.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				
+				textArea.setText("Conjunto de SuperLlaves " +'\n' + "-----------------------------"  +'\n' + Operaciones.TodasLasLlaves()+'\n' +'\n' + "Conjunto de Llaves Candidatas "+'\n' + "-----------------------------"  +'\n' +   Operaciones.LlavesCandidatas());
+				/*
 				JOptionPane.showMessageDialog (null, 
-						  "Superclave: " + Operaciones.LlavesCandidatas() ,
-						  "Llaves Candidatas" , JOptionPane.INFORMATION_MESSAGE);
+						  "Llave candidata: " + Operaciones.LlavesCandidatas() +'\n' +
+						  Operaciones.TodasLasLlaves() ,
+						  "Llaves" , JOptionPane.INFORMATION_MESSAGE);
+				*/
+				
 				
 			}
 		});
@@ -631,5 +651,4 @@ public class VentanaPrincipal extends JFrame {
 		NodosXPath.AgregarArco(Iz, Dr);
 
 	}
-
 }
