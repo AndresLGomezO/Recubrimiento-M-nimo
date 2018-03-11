@@ -7,8 +7,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
-import javax.naming.spi.DirStateFactory.Result;
-
 import DatosXpath.NodosXPath;
 
 
@@ -143,9 +141,10 @@ public class Operaciones {
 		FINAL.addAll(fds);
 		for (FuncDep fd : fds) {
 			Set<FuncDep> toRemove = new HashSet<>();
-			toRemove.addAll(fds);
+			toRemove.addAll(FINAL);
 			toRemove.remove(fd);
-			System.out.println("Cierre " + Operaciones.cierre(fd.getLeft(), toRemove));
+
+			//System.out.println("Cierre " + Operaciones.cierre(fd.getLeft(), toRemove));
 				if (Operaciones.cierre(fd.getLeft(), toRemove).containsAll(fd.getRight()) ){
 					FINAL.remove(fd);
 				}
