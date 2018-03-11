@@ -202,6 +202,7 @@ public class VentanaPrincipal extends JFrame {
 		contentPane.add(btnGenerarScript);
 
 		JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
+		//tabbedPane.setSelectedIndex(2);
 		tabbedPane.setBounds(10, 83, 870, 400);
 		contentPane.add(tabbedPane);
 
@@ -483,8 +484,8 @@ public class VentanaPrincipal extends JFrame {
 						  Operaciones.TodasLasLlaves() ,
 						  "Llaves" , JOptionPane.INFORMATION_MESSAGE);
 				*/
-				
-				
+				//panel_1
+				tabbedPane.setSelectedIndex(2);
 			}
 		});
 		btnClaves.setFont(new Font("Calibri", Font.PLAIN, 11));
