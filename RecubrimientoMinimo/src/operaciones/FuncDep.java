@@ -16,6 +16,7 @@ public final class FuncDep {
 		}
 
 		public FuncDep build() {
+			
 			return new FuncDep(this.left, this.right);
 		}
 
@@ -132,7 +133,7 @@ public final class FuncDep {
 			sb.append(", ");
 		}
 		sb.delete(sb.length() - 2, sb.length());
-		return sb.toString();
+		return "[" + sb.toString() + "]";
 	}
 
 }
