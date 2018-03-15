@@ -7,6 +7,7 @@ public final class Atributos {
 
 	protected static final int AVERAGE_LENGTH = 10;
 
+	
 	/**
 	 * 
 	 * @param nombre

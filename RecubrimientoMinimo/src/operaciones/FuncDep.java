@@ -10,6 +10,7 @@ public final class FuncDep {
 		private Set<Atributos> left;
 		private Set<Atributos> right;
 
+		
 		public Builder() {
 			this.left = new HashSet<>();
 			this.right = new HashSet<>();

@@ -17,6 +17,7 @@ public class Operaciones {
 	public static Set<Set<Atributos>> candid = new HashSet<Set<Atributos>>();
 	private Operaciones() {
 		
+		
 	}
 
 	public static Set<Atributos> cierre(Set<Atributos> attrs, Set<FuncDep> fds) {
