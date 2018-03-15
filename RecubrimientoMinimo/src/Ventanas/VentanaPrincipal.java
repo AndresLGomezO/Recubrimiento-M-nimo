@@ -4,6 +4,8 @@ import java.awt.BorderLayout;
 import DatosXpath.NodosXPath;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Set;
 import java.awt.EventQueue;
 import javax.swing.JFrame;
@@ -49,10 +51,12 @@ public class VentanaPrincipal extends JFrame {
 	private static String[][] dataAt = {};
 	static DefaultTableModel modeloDF = new DefaultTableModel(dataDF, ColumnasDF);
 	static DefaultTableModel modeloAt = new DefaultTableModel(dataAt, ColumnasAt);
+	static DefaultTableModel modeloProyeccion = new DefaultTableModel(dataAt, ColumnasAt);
 	private static JTable DFTable = new JTable(modeloDF) {
 		/**
 		 * 
 		 */
+		
 		private static final long serialVersionUID = 1L;
 
 		public boolean isCellEditable(int row, int column) {
@@ -77,6 +81,18 @@ public class VentanaPrincipal extends JFrame {
 			return false;
 		}
 	};
+	
+	private static JTable tableProyeccion = new JTable(modeloProyeccion) {
+		/**
+		 * 
+		 */
+		private static final long serialVersionUID = 1L;
+
+		public boolean isCellEditable(int row, int column) {
+			return false;
+		}
+	};
+	
 	static int yi = 0;
 	private final JLabel UDFJC = new JLabel(
 			"    Universidad Distrital Francisco Jos\u00E9 de Caldas - Maestr\u00EDa Ciencias de la Informaci\u00F3n y las Comunicaciones -  Bases de Datos");
@@ -85,10 +101,11 @@ public class VentanaPrincipal extends JFrame {
 	private final JLabel lblNombre = new JLabel("Nombre");
 	private final JLabel lblImplicante = new JLabel("Implicante");
 	private final JLabel lblImplicado = new JLabel("Implicado");
-	private JTable table;
 	static PanelGrafo jPanel1 = new PanelGrafo();
 	Graphics g;
 	static int ct;
+ 
+	
 
 	/**
 	 * Launch the application.
@@ -194,7 +211,9 @@ public class VentanaPrincipal extends JFrame {
 			}
 
 		});
-
+		
+				
+				
 		JButton btnGenerarScript = new JButton("Script");
 		btnGenerarScript.setFont(new Font("Calibri", Font.PLAIN, 11));
 		btnGenerarScript.setBackground(new Color(135, 206, 250));
@@ -368,24 +387,22 @@ public class VentanaPrincipal extends JFrame {
 		JPanel panel_1 = new JPanel();
 		tabbedPane.addTab("Resultado", null, panel_1, null);
 		panel_1.setLayout(null);
+		
+		JScrollPane scrollPane_4 = new JScrollPane();
+		scrollPane_4.setBounds(10, 40, 329, 268);
+		panel_1.add(scrollPane_4);
+		
+		
+		scrollPane_4.setViewportView(tableProyeccion);
 
-		JLabel label = new JLabel("Atributos");
-		label.setOpaque(true);
-		label.setHorizontalAlignment(SwingConstants.CENTER);
-		label.setForeground(Color.WHITE);
-		label.setFont(new Font("Calibri", Font.PLAIN, 15));
-		label.setBackground(Color.RED);
-		label.setBounds(10, 11, 354, 18);
-		panel_1.add(label);
-
-		JLabel label_1 = new JLabel("ID");
-		label_1.setOpaque(true);
-		label_1.setHorizontalAlignment(SwingConstants.CENTER);
-		label_1.setForeground(Color.WHITE);
-		label_1.setFont(new Font("Calibri", Font.PLAIN, 10));
-		label_1.setBackground(new Color(240, 128, 128));
-		label_1.setBounds(10, 28, 156, 12);
-		panel_1.add(label_1);
+		JLabel lblAtributosProyeccion = new JLabel("Atributos Proyeccion");
+		lblAtributosProyeccion.setOpaque(true);
+		lblAtributosProyeccion.setHorizontalAlignment(SwingConstants.CENTER);
+		lblAtributosProyeccion.setForeground(Color.WHITE);
+		lblAtributosProyeccion.setFont(new Font("Calibri", Font.PLAIN, 15));
+		lblAtributosProyeccion.setBackground(Color.RED);
+		lblAtributosProyeccion.setBounds(10, 11, 329, 18);
+		panel_1.add(lblAtributosProyeccion);
 
 		JLabel label_2 = new JLabel("Nombre");
 		label_2.setOpaque(true);
@@ -393,32 +410,10 @@ public class VentanaPrincipal extends JFrame {
 		label_2.setForeground(Color.WHITE);
 		label_2.setFont(new Font("Calibri", Font.PLAIN, 10));
 		label_2.setBackground(new Color(240, 128, 128));
-		label_2.setBounds(161, 28, 203, 12);
+		label_2.setBounds(67, 29, 272, 12);
 		panel_1.add(label_2);
-
-		JScrollPane pane = new JScrollPane(table);
-		getContentPane().add(pane, BorderLayout.CENTER);
-
-		table = new JTable((TableModel) null) {
-			public boolean isCellEditable(int row, int column) {
-				return false;
-			}
-		};
-		table.setShowVerticalLines(false);
-		table.setFont(new Font("Calibri", Font.PLAIN, 12));
-		table.setEditingRow(-1);
-		table.setAutoscrolls(true);
-		table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
-		table.setBounds(10, 40, 354, 255);
-		panel_1.add(table);
 		
-		JTextArea textArea = new JTextArea();
-		textArea.setLineWrap(true);
-		textArea.setAutoscrolls(false);
-		textArea.setBounds(376, 39, 406, 256);
-		panel_1.add(textArea);
-		
-		JLabel lblLlaves = new JLabel("Llaves");
+		JLabel lblLlaves = new JLabel("Resultados");
 		lblLlaves.setOpaque(true);
 		lblLlaves.setHorizontalAlignment(SwingConstants.CENTER);
 		lblLlaves.setForeground(Color.WHITE);
@@ -426,6 +421,39 @@ public class VentanaPrincipal extends JFrame {
 		lblLlaves.setBackground(Color.RED);
 		lblLlaves.setBounds(375, 13, 411, 18);
 		panel_1.add(lblLlaves);
+		
+		JScrollPane scrollPane_3 = new JScrollPane();
+		scrollPane_3.setBounds(374, 40, 411, 296);
+		panel_1.add(scrollPane_3);
+		
+		JTextArea textArea = new JTextArea();
+		scrollPane_3.setViewportView(textArea);
+		textArea.setLineWrap(true);
+		
+		JButton button_2 = new JButton("Borrar");
+		button_2.setFont(new Font("Calibri", Font.PLAIN, 11));
+		button_2.setBackground(new Color(240, 128, 128));
+		button_2.setBounds(10, 313, 79, 23);
+		panel_1.add(button_2);
+		
+		JButton button_3 = new JButton("Agregar");
+		button_3.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				AgregarAtributoProyeccion();
+			}
+		});
+		button_3.setFont(new Font("Calibri", Font.PLAIN, 11));
+		button_3.setBounds(245, 313, 94, 23);
+		panel_1.add(button_3);
+		
+		JLabel label = new JLabel("ID");
+		label.setOpaque(true);
+		label.setHorizontalAlignment(SwingConstants.CENTER);
+		label.setForeground(Color.WHITE);
+		label.setFont(new Font("Calibri", Font.PLAIN, 10));
+		label.setBackground(new Color(240, 128, 128));
+		label.setBounds(10, 29, 66, 12);
+		panel_1.add(label);
 
 		CargarArchivoBtn.setBounds(10, 49, 94, 23);
 		contentPane.add(CargarArchivoBtn);
@@ -461,12 +489,21 @@ public class VentanaPrincipal extends JFrame {
 				  System.out.println(" L1= " + L1);
 				  Set<FuncDep> L2 = Operaciones.getl2(L1);
 				  System.out.println(" L2= " + L2);
+				  				  
 				  
 				  JOptionPane.showMessageDialog (null, 
 						  "L0: " + L0.toString() + '\n' +
 						  "L1: " + L1.toString()  + '\n' +
 						  "L2: " + L2.toString(),
 						  "Recubrimiento MÃ­nimo" , JOptionPane.INFORMATION_MESSAGE);
+				  
+				  textArea.setText("Cubrimiento Minimo: \n" +
+						  "====================================== \n \n" +
+				  "L0: " + L0.toString() + '\n' +
+						  "-------------------------------- \n" +
+						  "L1: " + L1.toString()  + '\n' +
+						  "-------------------------------- \n" +
+						  "L2: " + L2.toString());
 			}
 		});
 		btnRmin.setFont(new Font("Calibri", Font.PLAIN, 11));
@@ -477,7 +514,32 @@ public class VentanaPrincipal extends JFrame {
 		
 		btnClaves.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				textArea.setText("Conjunto de SuperLlaves " +'\n' + "-----------------------------"  +'\n' + Operaciones.TodasLasLlaves()+'\n' +'\n' + "Conjunto de Llaves Candidatas "+'\n' + "-----------------------------"  +'\n' +   Operaciones.LlavesCandidatas());
+				
+				String [] dependXML = new String [NodosXPath.dependences.size()]; 
+                dependXML= NodosXPath.dependences.toArray(dependXML); 
+                
+                Set<FuncDep> fdCarg = FuncDep.getSet(dependXML); 
+                Set<FuncDep> L0 = Operaciones.l0(fdCarg);
+				  System.out.println(" L0= " + L0);
+				  Set<FuncDep> L1 = Operaciones.getL1(L0);
+				  Set<FuncDep> L2 = Operaciones.getl2(L1);
+				  Set<Atributos> Obligatorios = new HashSet<>(NodosXPath.attrs);
+				  Set<Atributos> Implicados = new HashSet<>();
+				  for (FuncDep fd : L2) {
+					  Implicados.addAll(fd.getRight());
+					  Implicados.addAll(fd.getLeft());
+				  }
+				  Obligatorios.removeAll(Implicados);
+				  System.out.println("OBLIGATORIOS " +Obligatorios);
+				  String Result = "Conjunto de SuperLlaves " +'\n' + 
+							"==============================="  +'\n' + 
+							Operaciones.TodasLasLlaves(L2) +'\n' +'\n' ;
+				  Operaciones.candid.clear();
+				String Result2 = "Conjunto de Llaves Candidatas "+'\n' + 
+							"==============================="  +'\n' +   
+							Operaciones.LlavesCandidatas(L2, Obligatorios);
+				
+				textArea.setText(Result + Result2);
 				/*
 				JOptionPane.showMessageDialog (null, 
 						  "Llave candidata: " + Operaciones.LlavesCandidatas() +'\n' +
@@ -493,10 +555,21 @@ public class VentanaPrincipal extends JFrame {
 		btnClaves.setEnabled(false); 
 		contentPane.add(btnClaves);
 
-		JButton btnCierre = new JButton("Clausura +");
-		btnCierre.setFont(new Font("Calibri", Font.PLAIN, 11));
-		btnCierre.setBounds(555, 49, 103, 23);
-		contentPane.add(btnCierre);
+		JButton btnProyeccion = new JButton("Proyeccion");
+		btnProyeccion.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				Set<Atributos> Atr = new HashSet<>();
+				for (int i = 0; i<= modeloProyeccion.getRowCount()-1;i++) {
+					Atributos at = new Atributos(modeloProyeccion.getValueAt(i, 1).toString());
+					Atr.add(at);
+				}
+				textArea.setText("El conjunto de dependencias para la Proyección es: \n ================================================ \n \n" + 
+			"X = " + Atr + " \n" + "DEP(" + Atr + ") = " + EjecutarProyeccion().toString());
+			}
+		});
+		btnProyeccion.setFont(new Font("Calibri", Font.PLAIN, 11));
+		btnProyeccion.setBounds(555, 49, 103, 23);
+		contentPane.add(btnProyeccion);
 
 		JButton btnBorrar = new JButton("Borrar");
 		btnBorrar.addActionListener(new ActionListener() {
@@ -571,6 +644,51 @@ public class VentanaPrincipal extends JFrame {
 			JOptionPane.showMessageDialog(null, "Esciba un nombre valido para el atributo");
 		}
 
+	}
+	public static Set<FuncDep> EjecutarProyeccion() {
+		Set<FuncDep> Result = new HashSet<>();
+		if(modeloProyeccion.getRowCount() == 0) {
+			JOptionPane.showMessageDialog(null, "Debe agregar un conjunto de atributos para realizar la proyección");
+		}else {
+			Set<Atributos> Att = new HashSet<>();
+			for (int i = 0; i <= modeloProyeccion.getRowCount()-1; i++ ) {
+				Atributos a = new Atributos(modeloProyeccion.getValueAt(i, 1).toString());
+				Att.add(a);
+			}
+			Result.addAll(Operaciones.Proyeccion(Att));
+			}
+		return Result;
+	}
+	public static void AgregarAtributoProyeccion() {
+		String nombreatr = null;
+		try {
+			nombreatr = JOptionPane.showInputDialog("Ingrese el nombre del atributo ");
+
+			if (!nombreatr.equals(null) && !nombreatr.replace(" ", "").equals("")) {
+				Atributos a = new Atributos(nombreatr);
+				
+				if (NodosXPath.attrs.contains(a)) {
+					
+					
+					PonerTextoProyeccion(nombreatr);
+					
+					
+					
+				} else {
+					
+					JOptionPane.showMessageDialog(null, "Esciba un nombre valido para el atributo");
+				}
+
+			}
+		} catch (Exception ex) {
+			JOptionPane.showMessageDialog(null, "Esciba un nombre valido para el atributo...");
+		}
+
+	}
+	public static void PonerTextoProyeccion(String Atrib) {
+		int ID = modeloProyeccion.getRowCount() + 1;
+		modeloProyeccion.addRow(new Object[] { ID, Atrib });
+		System.out.println("Texto Agregado "+ ID + Atrib);
 	}
 
 	public static void BorrarAtributo() {

@@ -10,12 +10,14 @@ public final class FuncDep {
 		private Set<Atributos> left;
 		private Set<Atributos> right;
 
+		
 		public Builder() {
 			this.left = new HashSet<>();
 			this.right = new HashSet<>();
 		}
 
 		public FuncDep build() {
+			
 			return new FuncDep(this.left, this.right);
 		}
 
@@ -132,7 +134,7 @@ public final class FuncDep {
 			sb.append(", ");
 		}
 		sb.delete(sb.length() - 2, sb.length());
-		return sb.toString();
+		return "[" + sb.toString() + "]";
 	}
 
 }
