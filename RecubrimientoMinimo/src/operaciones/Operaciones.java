@@ -320,6 +320,118 @@ public class Operaciones {
 		    return flag;
 		    }
 		
+		public static Set<Set<Atributos>> LlavesCandidatasB(Set<FuncDep> dfs, Set<Atributos> Oblig, Set<Atributos> Todas){
+			Set<Set<Atributos>> sk = new HashSet<Set<Atributos>>();
+			sk.addAll(Operaciones.TodasLasLlavesB(dfs, Oblig));
+			System.out.println("Conjunto de Llaves " + sk);
+			Set<Set<Atributos>> cand = new HashSet<Set<Atributos>>();
+			candid.clear();
+			Iterator<Set<Atributos>> i = sk.iterator();
+		    boolean flag = false;
+		    while(i.hasNext()){
+		    	flag = true;
+		    	Set<Atributos> a = i.next();
+		    	a.removeAll(Oblig);
+		    	System.out.println("Iteracion " + a);
+		    	Set<Set<Atributos>> c = Operaciones.reduction(a, dfs);
+		    	for (Set<Atributos> j : c ) {
+		    		Set<Atributos> d = j;
+		    		d.addAll(Oblig);
+		    		System.out.println("Prueba Clave " + d +" de Iteracion " + a);
+		    		if (!candid.contains(d)) {
+		    			if(Operaciones.cierre(d, dfs).containsAll(Todas)) {
+			    			flag = false;
+			    			
+			    			System.out.println("Se elimina la clave " + a + " dado que " + d + " implica a " + Operaciones.cierre(d, dfs));
+			    			}	
+		    			else {
+		    				System.out.println("Se agrega " + d + " implica " + Operaciones.cierre(d, dfs));
+		    				candid.add(d);
+		    			} 
+		    			
+		    		} else {
+	    				System.out.println("Se salta " + d );	
+	    			}
+		    		
+		    	}
+		    	a.addAll(Oblig);
+		    	/*
+		    	Iterator<Set<Atributos>> j = c.iterator();
+		    	while(j.hasNext()){
+		    		Set<Atributos> d = j.next();
+		    		d.addAll(Oblig);
+		    		System.out.println("Prueba Clave " + d +" de Iteracion " + a);
+		    		if(Operaciones.cierre(d, dfs).containsAll(NodosXPath.attrs)) {
+		    			flag = false;
+		    			}
+		    		}
+		    	*/
+		    	if(flag == true) {
+		    		System.out.println("Llave agregada " +a);
+		    		cand.add(a);
+		    		}
+		    	}
+		    return cand;
+		    }
+		public static Set<Set<Atributos>> TodasLasLlavesB(Set<FuncDep> dfs, Set<Atributos> atr){
+			System.out.println("TODAS LAS LLAVES  ");
+			Set<Atributos> Atb = new HashSet<>();
+			Set<Atributos> Der = new HashSet<>();
+			Set<Atributos> Falt = new HashSet<>();
+			Falt.addAll(atr);
+			Iterator<FuncDep> fd = dfs.iterator();
+			while (fd.hasNext()) {
+				FuncDep i = fd.next();
+				Atb.addAll(i.getLeft());
+			}
+			Iterator<FuncDep> fi = dfs.iterator();
+			while (fi.hasNext()) {
+				FuncDep e = fi.next();
+				Der.addAll(e.getRight());
+			}
+			Falt.removeAll(Der);
+			Falt.removeAll(Atb);
+			
+			System.out.println("Conjunto Atributos Obligatorios " + Falt);
+			System.out.println("Conjunto Implicantes " + Atb);
+			Set<Set<Atributos>> all = Operaciones.reduction(Atb, dfs);
+			all.add(Atb);
+			System.out.println("All " + all);
+			Set<Set<Atributos>> keys = new HashSet<Set<Atributos>>();
+		   for (Set<Atributos> It2 : all) {
+			   Set<Atributos> n = new HashSet<>();
+			   n.addAll(It2);
+			   n.addAll(Falt);
+			   System.out.println("Conjunto Agrandado " + n);
+			   if(Operaciones.cierre(n, dfs).containsAll(atr))
+			      {
+				   System.out.println("Llave agregada " + n);
+			        keys.add(n);
+			      } 
+		   }
+			/*
+			  Iterator<Set<Atributos>> It2 = all.iterator();
+			 
+		   while (It2.hasNext()) {
+			   System.out.println("Has Next ");
+		   	   Set<Atributos> n = new HashSet<>();
+			   n.addAll(It2.next());
+			   n.addAll(Falt);
+			   System.out.println("Conjunto Agrandado " + n);
+			   if(Operaciones.cierre(n, dfs).containsAll(NodosXPath.attrs))
+			      {
+				   System.out.println("Llave agregada " + n);
+			        keys.add(n);
+			      } 
+			   
+		   }
+		   */
+		   
+		    keys.add(atr);
+		    System.out.println("Conjunto Final Llaves " + keys);
+		    return keys;
+		  }
+
 		public static Set<Set<Atributos>> LlavesCandidatas(Set<FuncDep> dfs, Set<Atributos> Oblig){
 			Set<Set<Atributos>> sk = new HashSet<Set<Atributos>>();
 			sk.addAll(Operaciones.TodasLasLlaves(dfs));
@@ -429,6 +541,45 @@ public class Operaciones {
 			
 			
 			return g;
+			
+		}
+		public static Set<Set<FuncDep>> Bernstein(Set<FuncDep> fds) {
+			Set<FuncDep> RecMin = new HashSet<>();
+			Set<Set<Atributos>> LlavesCand = new HashSet<>();
+			Set<Set<Atributos>> Atribs = new HashSet<>();
+			Set<Set<FuncDep>> Conjuntos = new HashSet<>();
+
+			RecMin.addAll(Operaciones.getl2(Operaciones.getL1(Operaciones.l0(fds))));
+			LlavesCand.addAll(Operaciones.LlavesCandidatas(RecMin, NodosXPath.attrs));
+			
+			for (FuncDep r : RecMin) {
+				Set<Atributos> ladoIzq = new HashSet<>();
+				ladoIzq.addAll(r.getLeft());
+				if (!Atribs.contains(ladoIzq)) {
+					Atribs.add(ladoIzq);
+					System.out.println("Conjunto de Atributos " + ladoIzq + " Agregado");
+				}
+				
+			}
+			for (Set<Atributos> c1 : Atribs) {
+				System.out.println("Conjunto de Atributos " + c1);
+				Set<FuncDep> c2 = new HashSet<>();
+				for (FuncDep r1 : RecMin) {
+					System.out.println("Dependencia " + r1);
+					Set<Atributos> ladoIzq1 = new HashSet<>();
+					ladoIzq1.addAll(r1.getLeft());
+					if (ladoIzq1.equals(c1)) {
+					c2.add(r1);
+					System.out.println("Dependencia " + r1 + " agregada a " + c1);
+					}
+					
+				}
+				Conjuntos.add(c2);
+				System.out.println("Conjunto Agregado " + c2);
+				
+			}
+			
+			return Conjuntos;
 			
 		}
 		

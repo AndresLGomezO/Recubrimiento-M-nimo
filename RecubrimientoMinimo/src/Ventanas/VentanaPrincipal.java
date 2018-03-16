@@ -212,6 +212,15 @@ public class VentanaPrincipal extends JFrame {
 
 		});
 		
+		JButton btnBernstein = new JButton("Bernstein");
+		btnBernstein.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				AlgoritmoBernstein();
+			}
+		});
+		btnBernstein.setBounds(352, 49, 89, 23);
+		contentPane.add(btnBernstein);
+		
 				
 				
 		JButton btnGenerarScript = new JButton("Script");
@@ -525,12 +534,13 @@ public class VentanaPrincipal extends JFrame {
 				  Set<FuncDep> L2 = Operaciones.getl2(L1);
 				  Set<Atributos> Obligatorios = new HashSet<>(NodosXPath.attrs);
 				  Set<Atributos> Implicados = new HashSet<>();
+				  Operaciones.candid.clear();
 				  for (FuncDep fd : L2) {
 					  Implicados.addAll(fd.getRight());
 					  Implicados.addAll(fd.getLeft());
 				  }
 				  Obligatorios.removeAll(Implicados);
-				  System.out.println("OBLIGATORIOS " +Obligatorios);
+				  System.out.println("OBLIGATORIOS " + Obligatorios);
 				  String Result = "Conjunto de SuperLlaves " +'\n' + 
 							"==============================="  +'\n' + 
 							Operaciones.TodasLasLlaves(L2) +'\n' +'\n' ;
@@ -737,6 +747,30 @@ public class VentanaPrincipal extends JFrame {
 		}
 	}
 
+	public static void AlgoritmoBernstein() {
+		Set<Set<FuncDep>> AlgBer = new HashSet<>();
+		String Resultado = "Algoritmo de Sintesis Bernstein \n =================================== \n";
+		AlgBer.addAll(Operaciones.Bernstein(NodosXPath.fds));
+		int i = 1;
+		for (Set<FuncDep> AB1 : AlgBer) {
+			Set<Set<Atributos>> Llc = new HashSet<>();
+			Set<Atributos> At1 = new HashSet<>();
+			Set<Atributos> Ob = new HashSet<>();
+			for (FuncDep AB2 : AB1) {
+				At1.addAll(AB2.getLeft());
+				Ob.addAll(AB2.getLeft());
+				At1.addAll(AB2.getRight());
+			}
+			Resultado = Resultado + i + ") Dependencias: " + AB1 + "\n";
+			Operaciones.candid.clear();
+			System.out.println("aTRIBUTOS oBLIGATORIOS " + Ob + " Todos los Atributos " + At1);
+			Llc = Operaciones.LlavesCandidatasB(AB1, Ob, At1);
+			Resultado = Resultado + "Llave(s) Candidata(s): " + Llc + "\n ------------------------------ \n";
+			i++;
+		}
+		System.out.println(Resultado);
+		
+	}
 	public static void AgregarDF() {
 		Nodo Iz = null;
 		Nodo Dr = null;
