@@ -1,10 +1,8 @@
 package Ventanas;
 
-import java.awt.BorderLayout;
 import DatosXpath.NodosXPath;
 
 import java.io.File;
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 import java.awt.EventQueue;
@@ -20,7 +18,6 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import javax.swing.filechooser.*;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableModel;
 import javax.swing.JScrollPane;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -56,7 +53,7 @@ public class VentanaPrincipal extends JFrame {
 		/**
 		 * 
 		 */
-		
+
 		private static final long serialVersionUID = 1L;
 
 		public boolean isCellEditable(int row, int column) {
@@ -81,7 +78,7 @@ public class VentanaPrincipal extends JFrame {
 			return false;
 		}
 	};
-	
+
 	private static JTable tableProyeccion = new JTable(modeloProyeccion) {
 		/**
 		 * 
@@ -92,7 +89,7 @@ public class VentanaPrincipal extends JFrame {
 			return false;
 		}
 	};
-	
+
 	static int yi = 0;
 	private final JLabel UDFJC = new JLabel(
 			"    Universidad Distrital Francisco Jos\u00E9 de Caldas - Maestr\u00EDa Ciencias de la Informaci\u00F3n y las Comunicaciones -  Bases de Datos");
@@ -104,8 +101,6 @@ public class VentanaPrincipal extends JFrame {
 	static PanelGrafo jPanel1 = new PanelGrafo();
 	Graphics g;
 	static int ct;
- 
-	
 
 	/**
 	 * Launch the application.
@@ -133,15 +128,15 @@ public class VentanaPrincipal extends JFrame {
 		contentPane = new JPanel();
 		contentPane.setBackground(Color.WHITE);
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
-		
+
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		CargarArchivoBtn.setFont(new Font("Calibri", Font.PLAIN, 11));
 		CargarArchivoBtn.setBackground(new Color(152, 251, 152));
-		
+
 		JButton btnRmin = new JButton("Cubrimiento");
 		JButton btnClaves = new JButton("Llaves Candidatas");
-		
+
 		CargarArchivoBtn.addActionListener(new ActionListener() {
 
 			public void actionPerformed(ActionEvent arg0) {
@@ -162,58 +157,56 @@ public class VentanaPrincipal extends JFrame {
 					b = NodosXPath.LeerDependencias(XMLPath);
 
 					// Test cierre raul
-                    String [] dependXML = new String [NodosXPath.dependences.size()]; 
-                    dependXML= NodosXPath.dependences.toArray(dependXML); 
-                    
-                    
-                    for (String s : dependXML) 
-                    System.out.println("arreglo nuevo " + s); 
-                    
-					System.out.println("Lista de atributos cargados " + NodosXPath.atributtes);			
-					System.out.println("Lista de dependencias cargadas " + NodosXPath.dependences);
+					// String [] dependXML = new String [NodosXPath.dependences.size()];
+					// dependXML= NodosXPath.dependences.toArray(dependXML);
+					//
 
-					System.out.println("cierre ejemplo:  AB+");
-					System.out.println("dependencias : " + "A,B-->C; D-->E,F; C-->A; B,E-->C; B,C-->D;"
-							+ "C,F-->B,D; A,C,D-->B; C,E-->A,F");
+					// for (String s : dependXML)
+					// System.out.println("arreglo nuevo " + s);
+					//
+					// System.out.println("Lista de atributos cargados " + NodosXPath.atributtes);
+					// System.out.println("Lista de dependencias cargadas " +
+					// NodosXPath.dependences);
 
-					Set<Atributos> attrs = Atributos.getSet("A,B");
-					Set<FuncDep> fds = FuncDep
-							.getSet("A,B-->C; D-->E,F; C-->A; B,E-->C; B,C-->D;" + "C,F-->B,D; A,C,D-->B; C,E-->A,F");
+					// System.out.println("cierre ejemplo: AB+");
+					// System.out.println("dependencias : " + "A,B-->C; D-->E,F; C-->A; B,E-->C;
+					// B,C-->D;"
+					// + "C,F-->B,D; A,C,D-->B; C,E-->A,F");
+					//
+					// Set<Atributos> attrs = Atributos.getSet("A,B");
+					// Set<FuncDep> fds = FuncDep
+					// .getSet("A,B-->C; D-->E,F; C-->A; B,E-->C; B,C-->D;" + "C,F-->B,D; A,C,D-->B;
+					// C,E-->A,F");
+					//
+					// System.out.println("cierre " + Operaciones.cierre(attrs, fds));
 
-					System.out.println("cierre   " + Operaciones.cierre(attrs, fds));
-					
 					// Test L0 raul
-					System.out.println("Paso L0, ejemplo . Dependences= "
-							   + "A-->B;" 
-			                   + "A,B-->CB,C;" 
-							   + "A-->BC; " 
-			                   + "B,C-->D; " 
-							   + "B,C-->C,E");
-					
-					Set<FuncDep> depend = FuncDep.getSet(
-							             "A-->B;" 
-					                   + "A,B-->CB,C; " 
-									   + "A-->BC; " 
-					                   + "B,C-->D; " 
-									   + "B,C-->C,E");
-					System.out.println("Paso L0= " + Operaciones.l0(depend));
-					
-					System.out.println("L0 para dependencias cargadas ");
-					
-					
-				
+					// System.out.println("Paso L0, ejemplo . Dependences= "
+					// + "A-->B;"
+					// + "A,B-->CB,C;"
+					// + "A-->BC; "
+					// + "B,C-->D; "
+					// + "B,C-->C,E");
+					//
+					// Set<FuncDep> depend = FuncDep.getSet(
+					// "A-->B;"
+					// + "A,B-->CB,C; "
+					// + "A-->BC; "
+					// + "B,C-->D; "
+					// + "B,C-->C,E");
+					// System.out.println("Paso L0= " + Operaciones.l0(depend));
+					//
+					// System.out.println("L0 para dependencias cargadas ");
+					//
 
-					Set<FuncDep> fdCarg = FuncDep.getSet(dependXML); 
-					System.out.println(" L0= " + Operaciones.l0(fdCarg));
-
+					// Set<FuncDep> fdCarg = FuncDep.getSet(dependXML);
+					// System.out.println(" L0= " + Operaciones.l0(fdCarg));
 
 				}
 			}
 
 		});
-		
-				
-				
+
 		JButton btnGenerarScript = new JButton("Script");
 		btnGenerarScript.setFont(new Font("Calibri", Font.PLAIN, 11));
 		btnGenerarScript.setBackground(new Color(135, 206, 250));
@@ -221,7 +214,7 @@ public class VentanaPrincipal extends JFrame {
 		contentPane.add(btnGenerarScript);
 
 		JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
-		//tabbedPane.setSelectedIndex(2);
+		// tabbedPane.setSelectedIndex(2);
 		tabbedPane.setBounds(10, 83, 870, 400);
 		contentPane.add(tabbedPane);
 
@@ -362,7 +355,7 @@ public class VentanaPrincipal extends JFrame {
 
 		JPanel panel_2 = new JPanel();
 
-		tabbedPane.addTab("GrÃ¡fico", null, panel_2, null);
+		tabbedPane.addTab("Grafico", null, panel_2, null);
 
 		panel_2.setLayout(null);
 		panel_2.setAutoscrolls(true);
@@ -387,12 +380,11 @@ public class VentanaPrincipal extends JFrame {
 		JPanel panel_1 = new JPanel();
 		tabbedPane.addTab("Resultado", null, panel_1, null);
 		panel_1.setLayout(null);
-		
+
 		JScrollPane scrollPane_4 = new JScrollPane();
 		scrollPane_4.setBounds(10, 40, 329, 268);
 		panel_1.add(scrollPane_4);
-		
-		
+
 		scrollPane_4.setViewportView(tableProyeccion);
 
 		JLabel lblAtributosProyeccion = new JLabel("Atributos Proyeccion");
@@ -412,7 +404,7 @@ public class VentanaPrincipal extends JFrame {
 		label_2.setBackground(new Color(240, 128, 128));
 		label_2.setBounds(67, 29, 272, 12);
 		panel_1.add(label_2);
-		
+
 		JLabel lblLlaves = new JLabel("Resultados");
 		lblLlaves.setOpaque(true);
 		lblLlaves.setHorizontalAlignment(SwingConstants.CENTER);
@@ -421,21 +413,21 @@ public class VentanaPrincipal extends JFrame {
 		lblLlaves.setBackground(Color.RED);
 		lblLlaves.setBounds(375, 13, 411, 18);
 		panel_1.add(lblLlaves);
-		
+
 		JScrollPane scrollPane_3 = new JScrollPane();
 		scrollPane_3.setBounds(374, 40, 411, 296);
 		panel_1.add(scrollPane_3);
-		
+
 		JTextArea textArea = new JTextArea();
 		scrollPane_3.setViewportView(textArea);
 		textArea.setLineWrap(true);
-		
+
 		JButton button_2 = new JButton("Borrar");
 		button_2.setFont(new Font("Calibri", Font.PLAIN, 11));
 		button_2.setBackground(new Color(240, 128, 128));
 		button_2.setBounds(10, 313, 79, 23);
 		panel_1.add(button_2);
-		
+
 		JButton button_3 = new JButton("Agregar");
 		button_3.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -445,7 +437,7 @@ public class VentanaPrincipal extends JFrame {
 		button_3.setFont(new Font("Calibri", Font.PLAIN, 11));
 		button_3.setBounds(245, 313, 94, 23);
 		panel_1.add(button_3);
-		
+
 		JLabel label = new JLabel("ID");
 		label.setOpaque(true);
 		label.setHorizontalAlignment(SwingConstants.CENTER);
@@ -474,36 +466,29 @@ public class VentanaPrincipal extends JFrame {
 
 		contentPane.add(lblAaa);
 
-		
-		//JButton btnRmin = new JButton("Cubrimiento");
+		// cubrimi mal raul
+		// JButton btnRmin = new JButton("Cubrimiento");
 		btnRmin.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				
-				  String [] dependXML = new String [NodosXPath.dependences.size()]; 
-                  dependXML= NodosXPath.dependences.toArray(dependXML); 
-                  
-                  Set<FuncDep> fdCarg = FuncDep.getSet(dependXML); 
-                  Set<FuncDep> L0 = Operaciones.l0(fdCarg);
-				  System.out.println(" L0= " + L0);
-				  Set<FuncDep> L1 = Operaciones.getL1(L0);
-				  System.out.println(" L1= " + L1);
-				  Set<FuncDep> L2 = Operaciones.getl2(L1);
-				  System.out.println(" L2= " + L2);
-				  				  
-				  
-				  JOptionPane.showMessageDialog (null, 
-						  "L0: " + L0.toString() + '\n' +
-						  "L1: " + L1.toString()  + '\n' +
-						  "L2: " + L2.toString(),
-						  "Recubrimiento MÃ­nimo" , JOptionPane.INFORMATION_MESSAGE);
-				  
-				  textArea.setText("Cubrimiento Minimo: \n" +
-						  "====================================== \n \n" +
-				  "L0: " + L0.toString() + '\n' +
-						  "-------------------------------- \n" +
-						  "L1: " + L1.toString()  + '\n' +
-						  "-------------------------------- \n" +
-						  "L2: " + L2.toString());
+
+				String[] dependXML = new String[NodosXPath.dependences.size()];
+				dependXML = NodosXPath.dependences.toArray(dependXML);
+
+				Set<FuncDep> fdCarg = FuncDep.getSet(dependXML);
+				Set<FuncDep> L0 = Operaciones.l0(fdCarg);
+				// System.out.println(" L0= " + L0);
+				Set<FuncDep> L1 = Operaciones.getL1(L0);
+				// //System.out.println(" L1= " + L1);
+				Set<FuncDep> L2 = Operaciones.getl2(L1);
+				// //System.out.println(" L2= " + L2);
+
+				JOptionPane.showMessageDialog(null,
+						"L0: " + L0.toString() + '\n' + "L1: " + L1.toString() + '\n' + "L2: " + L2.toString(),
+						"Recubrimiento MÃ­nimo", JOptionPane.INFORMATION_MESSAGE);
+
+				textArea.setText("Cubrimiento Minimo: \n" + "====================================== \n \n" + "L0: "
+						+ L0.toString() + '\n' + "-------------------------------- \n" + "L1: " + L1.toString() + '\n'
+						+ "-------------------------------- \n" + "L2: " + L2.toString());
 			}
 		});
 		btnRmin.setFont(new Font("Calibri", Font.PLAIN, 11));
@@ -511,60 +496,57 @@ public class VentanaPrincipal extends JFrame {
 		btnRmin.setEnabled(false);
 		contentPane.add(btnRmin);
 
-		
 		btnClaves.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				
-				String [] dependXML = new String [NodosXPath.dependences.size()]; 
-                dependXML= NodosXPath.dependences.toArray(dependXML); 
-                
-                Set<FuncDep> fdCarg = FuncDep.getSet(dependXML); 
-                Set<FuncDep> L0 = Operaciones.l0(fdCarg);
-				  System.out.println(" L0= " + L0);
-				  Set<FuncDep> L1 = Operaciones.getL1(L0);
-				  Set<FuncDep> L2 = Operaciones.getl2(L1);
-				  Set<Atributos> Obligatorios = new HashSet<>(NodosXPath.attrs);
-				  Set<Atributos> Implicados = new HashSet<>();
-				  for (FuncDep fd : L2) {
-					  Implicados.addAll(fd.getRight());
-					  Implicados.addAll(fd.getLeft());
-				  }
-				  Obligatorios.removeAll(Implicados);
-				  System.out.println("OBLIGATORIOS " +Obligatorios);
-				  String Result = "Conjunto de SuperLlaves " +'\n' + 
-							"==============================="  +'\n' + 
-							Operaciones.TodasLasLlaves(L2) +'\n' +'\n' ;
-				  Operaciones.candid.clear();
-				String Result2 = "Conjunto de Llaves Candidatas "+'\n' + 
-							"==============================="  +'\n' +   
-							Operaciones.LlavesCandidatas(L2, Obligatorios);
-				
+
+				String[] dependXML = new String[NodosXPath.dependences.size()];
+				dependXML = NodosXPath.dependences.toArray(dependXML);
+
+				Set<FuncDep> fdCarg = FuncDep.getSet(dependXML);
+				Set<FuncDep> L0 = Operaciones.l0(fdCarg);
+				System.out.println(" L0= " + L0);
+				Set<FuncDep> L1 = Operaciones.getL1(L0);
+				Set<FuncDep> L2 = Operaciones.getl2(L1);
+				Set<Atributos> Obligatorios = new HashSet<>(NodosXPath.attrs);
+				Set<Atributos> Implicados = new HashSet<>();
+				for (FuncDep fd : L2) {
+					Implicados.addAll(fd.getRight());
+					Implicados.addAll(fd.getLeft());
+				}
+				Obligatorios.removeAll(Implicados);
+				System.out.println("OBLIGATORIOS " + Obligatorios);
+				String Result = "Conjunto de SuperLlaves " + '\n' + "===============================" + '\n'
+						+ Operaciones.TodasLasLlaves(L2) + '\n' + '\n';
+				Operaciones.candid.clear();
+				String Result2 = "Conjunto de Llaves Candidatas " + '\n' + "===============================" + '\n'
+						+ Operaciones.LlavesCandidatas(L2, Obligatorios);
+
 				textArea.setText(Result + Result2);
 				/*
-				JOptionPane.showMessageDialog (null, 
-						  "Llave candidata: " + Operaciones.LlavesCandidatas() +'\n' +
-						  Operaciones.TodasLasLlaves() ,
-						  "Llaves" , JOptionPane.INFORMATION_MESSAGE);
-				*/
-				//panel_1
+				 * JOptionPane.showMessageDialog (null, "Llave candidata: " +
+				 * Operaciones.LlavesCandidatas() +'\n' + Operaciones.TodasLasLlaves() ,
+				 * "Llaves" , JOptionPane.INFORMATION_MESSAGE);
+				 */
+				// panel_1
 				tabbedPane.setSelectedIndex(2);
 			}
 		});
 		btnClaves.setFont(new Font("Calibri", Font.PLAIN, 11));
 		btnClaves.setBounds(668, 49, 134, 23);
-		btnClaves.setEnabled(false); 
+		btnClaves.setEnabled(false);
 		contentPane.add(btnClaves);
 
 		JButton btnProyeccion = new JButton("Proyeccion");
 		btnProyeccion.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				Set<Atributos> Atr = new HashSet<>();
-				for (int i = 0; i<= modeloProyeccion.getRowCount()-1;i++) {
+				for (int i = 0; i <= modeloProyeccion.getRowCount() - 1; i++) {
 					Atributos at = new Atributos(modeloProyeccion.getValueAt(i, 1).toString());
 					Atr.add(at);
 				}
-				textArea.setText("El conjunto de dependencias para la Proyección es: \n ================================================ \n \n" + 
-			"X = " + Atr + " \n" + "DEP(" + Atr + ") = " + EjecutarProyeccion().toString());
+				textArea.setText(
+						"El conjunto de dependencias para la Proyección es: \n ================================================ \n \n"
+								+ "X = " + Atr + " \n" + "DEP(" + Atr + ") = " + EjecutarProyeccion().toString());
 			}
 		});
 		btnProyeccion.setFont(new Font("Calibri", Font.PLAIN, 11));
@@ -645,20 +627,22 @@ public class VentanaPrincipal extends JFrame {
 		}
 
 	}
+
 	public static Set<FuncDep> EjecutarProyeccion() {
 		Set<FuncDep> Result = new HashSet<>();
-		if(modeloProyeccion.getRowCount() == 0) {
+		if (modeloProyeccion.getRowCount() == 0) {
 			JOptionPane.showMessageDialog(null, "Debe agregar un conjunto de atributos para realizar la proyección");
-		}else {
+		} else {
 			Set<Atributos> Att = new HashSet<>();
-			for (int i = 0; i <= modeloProyeccion.getRowCount()-1; i++ ) {
+			for (int i = 0; i <= modeloProyeccion.getRowCount() - 1; i++) {
 				Atributos a = new Atributos(modeloProyeccion.getValueAt(i, 1).toString());
 				Att.add(a);
 			}
 			Result.addAll(Operaciones.Proyeccion(Att));
-			}
+		}
 		return Result;
 	}
+
 	public static void AgregarAtributoProyeccion() {
 		String nombreatr = null;
 		try {
@@ -666,16 +650,13 @@ public class VentanaPrincipal extends JFrame {
 
 			if (!nombreatr.equals(null) && !nombreatr.replace(" ", "").equals("")) {
 				Atributos a = new Atributos(nombreatr);
-				
+
 				if (NodosXPath.attrs.contains(a)) {
-					
-					
+
 					PonerTextoProyeccion(nombreatr);
-					
-					
-					
+
 				} else {
-					
+
 					JOptionPane.showMessageDialog(null, "Esciba un nombre valido para el atributo");
 				}
 
@@ -685,10 +666,11 @@ public class VentanaPrincipal extends JFrame {
 		}
 
 	}
+
 	public static void PonerTextoProyeccion(String Atrib) {
 		int ID = modeloProyeccion.getRowCount() + 1;
 		modeloProyeccion.addRow(new Object[] { ID, Atrib });
-		System.out.println("Texto Agregado "+ ID + Atrib);
+		System.out.println("Texto Agregado " + ID + Atrib);
 	}
 
 	public static void BorrarAtributo() {

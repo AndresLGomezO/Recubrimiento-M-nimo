@@ -48,7 +48,7 @@
 <!-- ini relac 3-->
 <DF id="21">  <Izq>AB</Izq> <Der>ABC</Der> </DF>
 <!-- fin 3-->
-<DF id="22">  <Izq>ABD</Izq> <Der></Der>C</DF>
-<DF id="23">  <Izq>ABC</Izq> <Der></Der>D</DF>
+<DF id="22">  <Izq>ABC</Izq> <Der>D</Der> </DF>
+<DF id="23">  <Izq>ABD</Izq> <Der>C</Der> </DF>
 <!-- in relac  nivel 4-->
 </Nodos>

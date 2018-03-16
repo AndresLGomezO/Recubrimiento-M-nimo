@@ -110,7 +110,7 @@ public class NodosXPath extends PanelGrafo {
 	public static Nodo VerificarNodoI(String Nombre) {
 		Nodo m = new Nodo();
 		if (Grafo.PanelGrafo.nodosI.contains(Nombre)) {
-			// System.out.println("NodosXpath.VerificarNodoI Si est√° " + Nombre + " tam "
+			// System.out.println("NodosXpath.VerificarNodoI Si est· " + Nombre + " tam "
 			// +Grafo.PanelGrafo.nodos.size() );
 
 			for (int i = 0; i <= Grafo.PanelGrafo.nodos.size(); i++) {
@@ -180,8 +180,7 @@ public class NodosXPath extends PanelGrafo {
 					String nombreDer = xp.compile("./Der").evaluate(nl.item(i));
 					// raul
 					dependences.add(nombreIz + "-->" + nombreDer);
-					fds.add(FuncDep.of(nombreIz, nombreDer));
-					
+					fds.add(FuncDep.of(nombreIz, nombreDer));							
 					ii = VerificarNodoI(nombreIz);
 					dd = VerificarNodoD(nombreDer);
 					AgregarArco(ii, dd);
