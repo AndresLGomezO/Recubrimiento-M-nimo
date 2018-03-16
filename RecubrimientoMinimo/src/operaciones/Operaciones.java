@@ -181,12 +181,12 @@ public class Operaciones {
 		return FINAL;
 	}
 
-	public static Set<Set<Atributos>> TodasLasLlaves(Set<FuncDep> dfs) {
+	public static Set<Set<Atributos>> TodasLasLlaves(Set<FuncDep> dfs, Set<Atributos> Todos) {
 		System.out.println("TODAS LAS LLAVES  ");
 		Set<Atributos> Atb = new HashSet<>();
 		Set<Atributos> Der = new HashSet<>();
 		Set<Atributos> Falt = new HashSet<>();
-		Falt.addAll(NodosXPath.attrs);
+		Falt.addAll(Todos);
 		Iterator<FuncDep> fd = dfs.iterator();
 		while (fd.hasNext()) {
 			FuncDep i = fd.next();
@@ -211,7 +211,7 @@ public class Operaciones {
 			n.addAll(It2);
 			n.addAll(Falt);
 			System.out.println("Conjunto Agrandado " + n);
-			if (Operaciones.cierre(n, dfs).containsAll(NodosXPath.attrs)) {
+			if (Operaciones.cierre(n, dfs).containsAll(Todos)) {
 				System.out.println("Llave agregada " + n);
 				keys.add(n);
 			}
@@ -228,7 +228,7 @@ public class Operaciones {
 		 * }
 		 */
 
-		keys.add(NodosXPath.attrs);
+		keys.add(Todos);
 		System.out.println("Conjunto Final Llaves " + keys);
 		return keys;
 	}
@@ -241,12 +241,9 @@ public class Operaciones {
 		for (Atributos It1 : New) {
 			Set<Atributos> c = new HashSet<>();
 			c.addAll(New);
-
 			c.remove(It1);
-
 			if (!c.isEmpty()) {
 				r.add(c);
-
 				Set<Set<Atributos>> re = new HashSet<Set<Atributos>>();
 				re.addAll(Operaciones.reduction(c, fds));
 				if (!r.containsAll(re)) {
@@ -295,9 +292,9 @@ public class Operaciones {
 		return flag;
 	}
 
-	public static Set<Set<Atributos>> LlavesCandidatas(Set<FuncDep> dfs, Set<Atributos> Oblig) {
+	public static Set<Set<Atributos>> LlavesCandidatas(Set<FuncDep> dfs, Set<Atributos> Oblig, Set<Atributos> Todos) {
 		Set<Set<Atributos>> sk = new HashSet<Set<Atributos>>();
-		sk.addAll(Operaciones.TodasLasLlaves(dfs));
+		sk.addAll(Operaciones.TodasLasLlaves(dfs, Todos));
 		System.out.println("Conjunto de Llaves " + sk);
 		candid.clear();
 		Set<Set<Atributos>> cand = new HashSet<Set<Atributos>>();
@@ -314,7 +311,7 @@ public class Operaciones {
 				d.addAll(Oblig);
 				System.out.println("Prueba Clave " + d + " de Iteracion " + a);
 				if (!candid.contains(d)) {
-					if (Operaciones.cierre(d, dfs).containsAll(NodosXPath.attrs)) {
+					if (Operaciones.cierre(d, dfs).containsAll(Todos)) {
 						flag = false;
 
 						System.out.println("Se elimina la clave " + a + " dado que " + d + " implica a "
@@ -400,5 +397,27 @@ public class Operaciones {
 		return g;
 
 	}
+	public static Set<Set<FuncDep>> AlgBernstein(Set<FuncDep> fds) {
+		Set<Set<FuncDep>> Conjuntos = new HashSet<>();
+		Set<FuncDep> CubMin = new HashSet<>();
+		CubMin.addAll(getl2(getL1(l0(fds))));
+		Set<Set<Atributos>> Implicantes = new HashSet<>();
+		for(FuncDep c : CubMin){
+			if (!Implicantes.contains(c.getLeft())) {
+				Implicantes.add(c.getLeft());				
+			}
+		}
+		for (Set<Atributos> Imp : Implicantes) {
+			Set<FuncDep> Temporal = new HashSet<>();
+			for (FuncDep conj : CubMin) {
+				if (Imp.equals(conj.getLeft())) {
+					Temporal.add(conj);
+				}
+			}
+			Conjuntos.add(Temporal);
+		}
+	return Conjuntos;	
+	}
+	
 
 }

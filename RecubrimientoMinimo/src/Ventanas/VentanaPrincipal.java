@@ -206,6 +206,12 @@ public class VentanaPrincipal extends JFrame {
 			}
 
 		});
+		
+		JButton btnBernstein = new JButton("Bernstein");
+		
+		btnBernstein.setFont(new Font("Calibri", Font.PLAIN, 11));
+		btnBernstein.setBounds(339, 49, 103, 23);
+		contentPane.add(btnBernstein);
 
 		JButton btnGenerarScript = new JButton("Script");
 		btnGenerarScript.setFont(new Font("Calibri", Font.PLAIN, 11));
@@ -495,7 +501,11 @@ public class VentanaPrincipal extends JFrame {
 		btnRmin.setBounds(451, 49, 94, 23);
 		btnRmin.setEnabled(false);
 		contentPane.add(btnRmin);
-
+		btnBernstein.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				textArea.setText(EjecutarBernstein());
+			}
+		});
 		btnClaves.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 
@@ -516,10 +526,10 @@ public class VentanaPrincipal extends JFrame {
 				Obligatorios.removeAll(Implicados);
 				System.out.println("OBLIGATORIOS " + Obligatorios);
 				String Result = "Conjunto de SuperLlaves " + '\n' + "===============================" + '\n'
-						+ Operaciones.TodasLasLlaves(L2) + '\n' + '\n';
+						+ Operaciones.TodasLasLlaves(L2, NodosXPath.attrs) + '\n' + '\n';
 				Operaciones.candid.clear();
 				String Result2 = "Conjunto de Llaves Candidatas " + '\n' + "===============================" + '\n'
-						+ Operaciones.LlavesCandidatas(L2, Obligatorios);
+						+ Operaciones.LlavesCandidatas(L2, Obligatorios, NodosXPath.attrs);
 
 				textArea.setText(Result + Result2);
 				/*
@@ -641,6 +651,42 @@ public class VentanaPrincipal extends JFrame {
 			Result.addAll(Operaciones.Proyeccion(Att));
 		}
 		return Result;
+	}
+	public static String EjecutarBernstein() {
+		Set<Set<FuncDep>> Resultado = new HashSet<>();
+		Set<FuncDep> Minimal = new HashSet<>();
+		Set<Set<Atributos>> Llc = new HashSet<>();
+		Set<Atributos> Oblig = new HashSet<>();
+		Oblig.addAll(NodosXPath.attrs);
+		String Res = "Algoritmo de Bernstein: \n ==================================== \n";
+		Minimal.addAll(Operaciones.getl2(Operaciones.getL1(Operaciones.l0(NodosXPath.fds))));
+		Res = Res + "Conjunto con reducción minimal: " + Minimal + "\n ---------------------------------- \n";
+		for (FuncDep f : Minimal) {
+			Oblig.removeAll(f.getLeft());
+			Oblig.removeAll(f.getRight());
+		}
+		Llc.addAll(Operaciones.LlavesCandidatas(Minimal, Oblig, NodosXPath.attrs));
+		Res = Res + "Llave(s) Candidata(s): " + Llc + "\n ==================================== \n Subconjuntos: \n";
+		Resultado.addAll(Operaciones.AlgBernstein(NodosXPath.fds));
+		int i = 1;
+		for (Set<FuncDep> r1 : Resultado) {
+			Set<Set<Atributos>> Llc1 = new HashSet<>();
+			Set<Atributos> Obl1 = new HashSet<>();
+			Set<Atributos> Todos1 = new HashSet<>();
+			Res = Res + i + ") Dependencias " + r1 + "\n";
+			for (FuncDep r2 : r1) {
+				Todos1.addAll(r2.getLeft());
+				Todos1.addAll(r2.getRight());
+			}
+			Operaciones.candid.clear();
+			Llc1.addAll(Operaciones.LlavesCandidatas(r1, Obl1, Todos1));
+			System.out.println("Conjunto DFs " + r1 + " Obl " + Obl1 + " Todos " + Todos1 + " Llaves " + Llc1);
+			Res = Res + "Llave(s) Candidata(s): " + Llc1 + "\n ---------------------------------- \n";
+		i++;
+		}
+		
+		return Res;
+		
 	}
 
 	public static void AgregarAtributoProyeccion() {
