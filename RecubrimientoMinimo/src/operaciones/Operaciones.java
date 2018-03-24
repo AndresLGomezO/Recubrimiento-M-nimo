@@ -36,29 +36,30 @@ public class Operaciones {
 	}
 
 	public static Set<FuncDep> getL1(Set<FuncDep> fds) {
-		System.out.println("1. Conjunto Inicial L1" + fds);
+		// System.out.println("1. Conjunto Inicial L1" + fds);
 		Set<FuncDep> result = new HashSet<>();
 		result.addAll(fds);
 		for (FuncDep fd : fds) {
-			System.out.println("Iteracion " + fd);
+			// System.out.println("Iteracion " + fd);
 			Set<Atributos> extranos = new HashSet<>();
 			if (fd.getLeft().size() > 1) {
 				Set<Set<Atributos>> Comb = Operaciones.reduction(fd.getLeft(), fds);
 				for (Set<Atributos> Comb1 : Comb) {
-					System.out.println("Combinacion " + Comb1 + " de " + fd);
+					// System.out.println("Combinacion " + Comb1 + " de " + fd);
 					if (Operaciones.cierre(Comb1, result).containsAll(fd.getRight())) {
 						Set<Atributos> temp = new HashSet<>();
 						temp.addAll(fd.getLeft());
 						temp.removeAll(Comb1);
 						extranos.addAll(temp);
-						System.out.println("Conjunto Extraños " + extranos);
+						// System.out.println("Conjunto Extraños " + extranos);
 					}
 				}
 			}
-			System.out.println("Comparacion extranos " + extranos + " ^ " + fd.getLeft());
+			// System.out.println("Comparacion extranos " + extranos + " ^ " +
+			// fd.getLeft());
 			if (!extranos.isEmpty()) {
 				if (extranos.containsAll(fd.getLeft())) {
-					System.out.println("Se elimina " + fd);
+					// System.out.println("Se elimina " + fd);
 					result.remove(fd);
 				} else {
 					Set<Atributos> temp1 = new HashSet<>();
@@ -67,7 +68,7 @@ public class Operaciones {
 					FuncDep add = new FuncDep(temp1, fd.getRight());
 					result.remove(fd);
 					result.add(add);
-					System.out.println("Se agrega " + add);
+					// System.out.println("Se agrega " + add);
 				}
 			}
 
@@ -78,7 +79,7 @@ public class Operaciones {
 	}
 
 	public static Set<FuncDep> getL1A(Set<FuncDep> fds) {
-		System.out.println("1. Conjunto Inicial L1" + fds);
+		// System.out.println("1. Conjunto Inicial L1" + fds);
 		Set<FuncDep> result = new HashSet<>();
 		for (FuncDep fd : fds) {
 			if (fd.getLeft().size() > 1) {
@@ -133,7 +134,7 @@ public class Operaciones {
 				}
 			}
 		}
-		System.out.println("1. Conjunto final L1" + result);
+		// System.out.println("1. Conjunto final L1" + result);
 		return result;
 	}
 
@@ -161,23 +162,23 @@ public class Operaciones {
 	}
 
 	public static Set<FuncDep> getl2(Set<FuncDep> fds) {
-		System.out.println("1. Conjunto Inicial L2" + fds);
+		// System.out.println("1. Conjunto Inicial L2" + fds);
 		Set<FuncDep> FINAL = new HashSet<>();
 		FINAL.addAll(fds);
 		for (FuncDep fd : fds) {
 			Set<FuncDep> toRemove = new HashSet<FuncDep>(FINAL);
-			System.out.println("1. Conjunto Inicial " + toRemove);
+			// System.out.println("1. Conjunto Inicial " + toRemove);
 			toRemove.remove(fd);
-			System.out.println("Conjunto Eliminado " + toRemove);
-			System.out.println("Cierre sin " + fd);
+			// System.out.println("Conjunto Eliminado " + toRemove);
+			// System.out.println("Cierre sin " + fd);
 			if (Operaciones.cierre(fd.getLeft(), toRemove).containsAll(fd.getRight())) {
-				System.out.println("Implicane " + fd.getLeft());
-				System.out.println("Cierre " + Operaciones.cierre(fd.getLeft(), toRemove));
-				System.out.println("Dependencia Eliminada " + fd);
+				// System.out.println("Implicane " + fd.getLeft());
+				// System.out.println("Cierre " + Operaciones.cierre(fd.getLeft(), toRemove));
+				// System.out.println("Dependencia Eliminada " + fd);
 				FINAL.remove(fd);
 			}
 		}
-		System.out.println("1. Conjunto Final L2" + FINAL);
+		// System.out.println("1. Conjunto Final L2" + FINAL);
 		return FINAL;
 	}
 
@@ -199,25 +200,23 @@ public class Operaciones {
 		Falt.removeAll(Der);
 		Falt.removeAll(Atb);
 
-		
 		Set<Set<Atributos>> all = Operaciones.reduction(Atb, dfs);
 		all.add(Atb);
-		
+
 		Set<Set<Atributos>> keys = new HashSet<Set<Atributos>>();
 		for (Set<Atributos> It2 : all) {
 			Set<Atributos> n = new HashSet<>();
 			n.addAll(It2);
 			n.addAll(Falt);
-			
+
 			if (Operaciones.cierre(n, dfs).containsAll(Todos)) {
-				
+
 				keys.add(n);
 			}
 		}
-		
 
 		keys.add(Todos);
-		System.out.println("Conjunto Final Llaves " + keys);
+		// System.out.println("Conjunto Final Llaves " + keys);
 		return keys;
 	}
 
@@ -255,7 +254,7 @@ public class Operaciones {
 			Nueva.remove(i.next());
 			if (Operaciones.cierre(Nueva, Deps).containsAll(NodosXPath.attrs)) {
 
-				System.out.println("Llave candidata " + Attr);
+				// System.out.println("Llave candidata " + Attr);
 				flag = false;
 
 			}
@@ -265,19 +264,20 @@ public class Operaciones {
 		return flag;
 	}
 
-	public static Set<Set<Atributos>> LlavesCandidatas(Set<Set<Atributos>> TodaslasLl, Set<FuncDep> dfs, Set<Atributos> Oblig, Set<Atributos> Todos) {
+	public static Set<Set<Atributos>> LlavesCandidatas(Set<Set<Atributos>> TodaslasLl, Set<FuncDep> dfs,
+			Set<Atributos> Oblig, Set<Atributos> Todos) {
 		Set<Set<Atributos>> sk = new HashSet<Set<Atributos>>();
 		sk.addAll(TodaslasLl);
-		System.out.println("Conjunto de Llaves " + sk);
+		// System.out.println("Conjunto de Llaves " + sk);
 		candid.clear();
 		Set<Set<Atributos>> cand = new HashSet<Set<Atributos>>();
 		Iterator<Set<Atributos>> i = sk.iterator();
-		
+
 		while (i.hasNext()) {
-			
+
 			candid.clear();
 			boolean flag = true;
-			
+
 			Set<Atributos> a = i.next();
 			a.removeAll(Oblig);
 			Set<Set<Atributos>> c = Operaciones.reduction(a, dfs);
@@ -291,14 +291,14 @@ public class Operaciones {
 						candid.add(d);
 					}
 
-				} 
+				}
 			}
 			a.addAll(Oblig);
 			if (flag == true) {
 				cand.add(a);
 			}
 		}
-		System.out.println("Conjunto final de Llaves " + cand);
+		// System.out.println("Conjunto final de Llaves " + cand);
 		return cand;
 	}
 
@@ -310,22 +310,22 @@ public class Operaciones {
 
 		w.addAll(NodosXPath.attrs);
 		w.removeAll(Atr);
-		System.out.println("Conjunto G " + w);
+		// System.out.println("Conjunto G " + w);
 		for (Atributos a : w) {
 			Set<Atributos> ats = new HashSet<>();
 			ats.add(a);
-			System.out.println("Atributo A " + ats);
+			// System.out.println("Atributo A " + ats);
 			Set<FuncDep> Hd = new HashSet<>();
 			Set<FuncDep> Hi = new HashSet<>();
 			Set<FuncDep> toAdd = new HashSet<>();
 			for (FuncDep y : g) {
 				if (y.getLeft().contains(a)) {
 					Hi.add(y);
-					System.out.println("Dependencia IZQ " + Hi);
+					// System.out.println("Dependencia IZQ " + Hi);
 				}
 				if (y.getRight().contains(a) && y.getRight().size() == 1) {
 					Hd.add(y);
-					System.out.println("Dependencia DER " + Hd);
+					// System.out.println("Dependencia DER " + Hd);
 				}
 
 			}
@@ -340,7 +340,7 @@ public class Operaciones {
 								IzqN.addAll(Der.getLeft());
 								FuncDep a1 = new FuncDep(IzqN, Izq.getRight());
 								if (a1.getLeft().equals(a1.getRight())) {
-									System.out.println(a1.getLeft() + " Es igual que " + a1.getRight());
+									;// System.out.println(a1.getLeft() + " Es igual que " + a1.getRight());
 								} else {
 									toAdd.add(a1);
 								}
@@ -352,20 +352,21 @@ public class Operaciones {
 			g.removeAll(Hi);
 			g.removeAll(Hd);
 			g.addAll(toAdd);
-			System.out.println("Nuevo G " + g);
+			// System.out.println("Nuevo G " + g);
 		}
 
 		return g;
 
 	}
+
 	public static Set<Set<FuncDep>> AlgBernstein(Set<FuncDep> fds) {
 		Set<Set<FuncDep>> Conjuntos = new HashSet<>();
 		Set<FuncDep> CubMin = new HashSet<>();
 		CubMin.addAll(getl2(getL1(l0(fds))));
 		Set<Set<Atributos>> Implicantes = new HashSet<>();
-		for(FuncDep c : CubMin){
+		for (FuncDep c : CubMin) {
 			if (!Implicantes.contains(c.getLeft())) {
-				Implicantes.add(c.getLeft());				
+				Implicantes.add(c.getLeft());
 			}
 		}
 		for (Set<Atributos> Imp : Implicantes) {
@@ -379,8 +380,9 @@ public class Operaciones {
 			Temporal1.addAll(Operaciones.getL1(Temporal));
 			Conjuntos.add(Temporal1);
 		}
-	return Conjuntos;
+		return Conjuntos;
 	}
+
 	public static Set<Set<FuncDep>> FNBC(Set<FuncDep> fds, Set<Atributos> attrs) {
 		Set<Set<Atributos>> ladosizq = new HashSet<>();
 		Set<Set<FuncDep>> resultado = new HashSet<>();
@@ -394,35 +396,60 @@ public class Operaciones {
 		for (FuncDep FD : temp) {
 			if (!Tllaves.contains(FD.getLeft()) && !ladosizq.contains(FD.getLeft())) {
 				ladosizq.add(FD.getLeft());
-				System.out.println("Set agregado " + FD.getLeft());
-			}else {
+				// System.out.println("Set agregado " + FD.getLeft());
+			} else {
 				temp3.add(FD);
 			}
 		}
-		
+
 		for (Set<Atributos> Izq : ladosizq) {
-			System.out.println("Set Prueba " + Izq);
-				Set<FuncDep> nuevaR = new HashSet<>();
-				for (FuncDep FD1 : temp1) {
-					System.out.println("Lado Izquierdo DF " + FD1.getLeft());
+			// System.out.println("Set Prueba " + Izq);
+			Set<FuncDep> nuevaR = new HashSet<>();
+			for (FuncDep FD1 : temp1) {
+				// System.out.println("Lado Izquierdo DF " + FD1.getLeft());
 				if (Izq.equals(FD1.getLeft())) {
 					nuevaR.add(FD1);
 					System.out.println("Agregada la DF " + FD1);
-					
+
 				}
-					
-				
-				}
-				resultado.add(nuevaR);	
-				System.out.println("Agregada al resultado " + nuevaR);
+
 			}
-			
-		
-		
+			resultado.add(nuevaR);
+			// System.out.println("Agregada al resultado " + nuevaR);
+		}
+
 		resultado.add(temp3);
-		
+
 		return resultado;
-		
+
+	}
+
+	public static Set<FuncDep> calc3FN(Set<Set<Atributos>> attrs, Set<FuncDep> depFunc, Set<Atributos> attrOblig,
+			Set<Atributos> allAttr) {
+		Set<Set<Atributos>> llavesC = LlavesCandidatas(attrs, depFunc, attrOblig, allAttr);
+		Set<Atributos> primes = new HashSet<>();
+		for (Set<Atributos> k : llavesC) {
+			// ALL k e llavesC
+			primes.addAll(k);
+		}
+
+		Set<FuncDep> _3fn = new HashSet<>();
+		for (FuncDep fd : depFunc) {
+			if (!primes.containsAll(fd.getRight())) {
+				boolean contains = false;
+				for (Set<Atributos> k : llavesC) {
+					if (fd.getLeft().containsAll(k)) {
+						contains = true;
+						break;
+					}
+				}
+				if (!contains) {
+					_3fn.add(fd);
+				}
+			}
+
+		}
+		return _3fn;
 	}
 
 }

@@ -206,23 +206,56 @@ public class VentanaPrincipal extends JFrame {
 			}
 
 		});
-		
+
 		JButton FNBCodd = new JButton("FNBC");
-		
+
 		FNBCodd.setFont(new Font("Calibri", Font.PLAIN, 11));
-		FNBCodd.setBounds(275, 48, 87, 23);
+		FNBCodd.setBounds(205, 48, 87, 23);
 		contentPane.add(FNBCodd);
-		
+
+		JButton btn3FN = new JButton("3FN");
+		btn3FN.setFont(new Font("Calibri", Font.PLAIN, 11));
+		btn3FN.setBounds(296, 48, 70, 23);
+		contentPane.add(btn3FN);
+
+		btn3FN.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+
+				Set<FuncDep> fdFile = NodosXPath.fds;
+				Set<FuncDep> l0 = Operaciones.l0(fdFile);
+				Set<FuncDep> l1 = Operaciones.getL1(l0);
+				Set<FuncDep> l2 = Operaciones.getl2(l1);
+				Set<Atributos> Obligatorios = new HashSet<>(NodosXPath.attrs);
+				Set<Set<Atributos>> Todas = new HashSet<>();
+				Set<Atributos> Implicados = new HashSet<>();
+				Todas.addAll(Operaciones.TodasLasLlaves(l2, NodosXPath.attrs));
+				for (FuncDep fd : l2) {
+					Implicados.addAll(fd.getRight());
+					Implicados.addAll(fd.getLeft());
+				}
+				Obligatorios.removeAll(Implicados);
+
+				Operaciones.candid.clear();
+
+				String rta = "Tercera forma Normal " + '\n' + "===============================" + '\n'
+						+ Operaciones.calc3FN(Todas, l2, Obligatorios, NodosXPath.attrs);
+
+				JOptionPane.showMessageDialog(null, rta, "3FN", JOptionPane.INFORMATION_MESSAGE);
+
+				System.out.println(rta);
+			}
+		});
+
 		JButton btnBernstein = new JButton("Bernstein");
-		
+
 		btnBernstein.setFont(new Font("Calibri", Font.PLAIN, 11));
-		btnBernstein.setBounds(371, 49, 87, 23);
+		btnBernstein.setBounds(371, 48, 92, 23);
 		contentPane.add(btnBernstein);
 
 		JButton btnGenerarScript = new JButton("Script");
 		btnGenerarScript.setFont(new Font("Calibri", Font.PLAIN, 11));
 		btnGenerarScript.setBackground(new Color(135, 206, 250));
-		btnGenerarScript.setBounds(114, 49, 76, 23);
+		btnGenerarScript.setBounds(114, 48, 76, 23);
 		contentPane.add(btnGenerarScript);
 
 		JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
@@ -459,7 +492,7 @@ public class VentanaPrincipal extends JFrame {
 		label.setBounds(10, 29, 66, 12);
 		panel_1.add(label);
 
-		CargarArchivoBtn.setBounds(10, 49, 94, 23);
+		CargarArchivoBtn.setBounds(10, 48, 94, 23);
 		contentPane.add(CargarArchivoBtn);
 
 		UDFJC.setForeground(Color.WHITE);
@@ -483,8 +516,6 @@ public class VentanaPrincipal extends JFrame {
 		btnRmin.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 
-				
-
 				Set<FuncDep> fdCarg = NodosXPath.fds;
 				Set<FuncDep> L0 = Operaciones.l0(fdCarg);
 				// System.out.println(" L0= " + L0);
@@ -503,7 +534,7 @@ public class VentanaPrincipal extends JFrame {
 			}
 		});
 		btnRmin.setFont(new Font("Calibri", Font.PLAIN, 11));
-		btnRmin.setBounds(467, 49, 94, 23);
+		btnRmin.setBounds(467, 48, 99, 23);
 		contentPane.add(btnRmin);
 		FNBCodd.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
@@ -522,10 +553,9 @@ public class VentanaPrincipal extends JFrame {
 		btnClaves.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 
-				
 				Set<FuncDep> fdCarg = NodosXPath.fds;
 				Set<FuncDep> L0 = Operaciones.l0(fdCarg);
-				System.out.println(" L0= " + L0);
+
 				Set<FuncDep> L1 = Operaciones.getL1(L0);
 				Set<FuncDep> L2 = Operaciones.getl2(L1);
 				Set<Atributos> Obligatorios = new HashSet<>(NodosXPath.attrs);
@@ -538,9 +568,10 @@ public class VentanaPrincipal extends JFrame {
 				}
 				Obligatorios.removeAll(Implicados);
 				System.out.println("OBLIGATORIOS " + Obligatorios);
-				String Result = "Conjunto de SuperLlaves " + '\n' + "===============================" + '\n'
-						+ Todas + '\n' + '\n';
+				String Result = "Conjunto de SuperLlaves " + '\n' + "===============================" + '\n' + Todas
+						+ '\n' + '\n';
 				Operaciones.candid.clear();
+
 				String Result2 = "Conjunto de Llaves Candidatas " + '\n' + "===============================" + '\n'
 						+ Operaciones.LlavesCandidatas(Todas, L2, Obligatorios, NodosXPath.attrs);
 
@@ -554,8 +585,9 @@ public class VentanaPrincipal extends JFrame {
 				tabbedPane.setSelectedIndex(2);
 			}
 		});
+
 		btnClaves.setFont(new Font("Calibri", Font.PLAIN, 11));
-		btnClaves.setBounds(668, 49, 134, 23);
+		btnClaves.setBounds(668, 48, 138, 23);
 		contentPane.add(btnClaves);
 
 		JButton btnProyeccion = new JButton("Proyeccion");
@@ -572,7 +604,7 @@ public class VentanaPrincipal extends JFrame {
 			}
 		});
 		btnProyeccion.setFont(new Font("Calibri", Font.PLAIN, 11));
-		btnProyeccion.setBounds(571, 49, 87, 23);
+		btnProyeccion.setBounds(571, 48, 92, 23);
 		contentPane.add(btnProyeccion);
 
 		JButton btnBorrar = new JButton("Borrar");
@@ -584,7 +616,7 @@ public class VentanaPrincipal extends JFrame {
 		});
 		btnBorrar.setBackground(new Color(240, 128, 128));
 		btnBorrar.setFont(new Font("Calibri", Font.PLAIN, 11));
-		btnBorrar.setBounds(812, 49, 68, 23);
+		btnBorrar.setBounds(812, 48, 68, 23);
 		contentPane.add(btnBorrar);
 
 		JLabel lblTexto = new JLabel("");
@@ -624,7 +656,7 @@ public class VentanaPrincipal extends JFrame {
 		DefaultTableModel modeloDF = (DefaultTableModel) DFTable.getModel();
 		modeloDF.getDataVector().removeAllElements();
 		modeloDF.fireTableDataChanged();
-		
+
 		DefaultTableModel modeloProyeccion = (DefaultTableModel) tableProyeccion.getModel();
 		modeloProyeccion.getDataVector().removeAllElements();
 		modeloProyeccion.fireTableDataChanged();
@@ -636,7 +668,7 @@ public class VentanaPrincipal extends JFrame {
 		Grafo.PanelGrafo.atributos.clear();
 		NodosXPath.attrs.clear();
 		NodosXPath.fds.clear();
-	
+
 		yi = 0;
 
 	}
@@ -671,6 +703,7 @@ public class VentanaPrincipal extends JFrame {
 		}
 		return Result;
 	}
+
 	public static String EjecutarBernstein() {
 		Set<Set<FuncDep>> Resultado = new HashSet<>();
 		Set<FuncDep> Minimal = new HashSet<>();
@@ -703,13 +736,14 @@ public class VentanaPrincipal extends JFrame {
 			Set<Set<Atributos>> Ll2 = new HashSet<>();
 			Ll2.addAll(Operaciones.TodasLasLlaves(r1, Todos1));
 			Llc1.addAll(Operaciones.LlavesCandidatas(Ll2, r1, Obl1, Todos1));
-			System.out.println("Conjunto DFs " + r1 + " Obl " + Obl1 + " Todos " + Todos1 + " Llaves " + Llc1);
+			// System.out.println("Conjunto DFs " + r1 + " Obl " + Obl1 + " Todos " + Todos1
+			// + " Llaves " + Llc1);
 			Res = Res + "Llave(s) Candidata(s): " + Llc1 + "\n ---------------------------------- \n";
-		i++;
+			i++;
 		}
-		
+
 		return Res;
-		
+
 	}
 
 	public static void AgregarAtributoProyeccion() {
@@ -739,7 +773,7 @@ public class VentanaPrincipal extends JFrame {
 	public static void PonerTextoProyeccion(String Atrib) {
 		int ID = modeloProyeccion.getRowCount() + 1;
 		modeloProyeccion.addRow(new Object[] { ID, Atrib });
-		System.out.println("Texto Agregado " + ID + Atrib);
+		// System.out.println("Texto Agregado " + ID + Atrib);
 	}
 
 	public static void BorrarAtributo() {
