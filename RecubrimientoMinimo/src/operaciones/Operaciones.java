@@ -51,7 +51,7 @@ public class Operaciones {
 						temp.addAll(fd.getLeft());
 						temp.removeAll(Comb1);
 						extranos.addAll(temp);
-						// System.out.println("Conjunto Extraños " + extranos);
+						// System.out.println("Conjunto Extraï¿½os " + extranos);
 					}
 				}
 			}
@@ -87,7 +87,7 @@ public class Operaciones {
 				HashSet<Atributos> extranos = new HashSet<>();
 				boolean noExtrano = false;
 				for (Atributos a : fd.getLeft()) {
-					// Validación atributos extraños
+					// Validaciï¿½n atributos extraï¿½os
 					Set<Atributos> rightAttribute = new HashSet<>(fd.getRight());
 					noExtrano = false;
 					Set<Atributos> newLeft = new HashSet<>();
@@ -386,6 +386,8 @@ public class Operaciones {
 	public static Set<Set<FuncDep>> FNBC(Set<FuncDep> fds, Set<Atributos> attrs) {
 		Set<Set<Atributos>> ladosizq = new HashSet<>();
 		Set<Set<FuncDep>> resultado = new HashSet<>();
+		Set<Atributos> atributos = new HashSet<>();
+		atributos = attrs;
 		Set<FuncDep> temp = new HashSet<>();
 		Set<FuncDep> temp3 = new HashSet<>();
 		temp = fds;
@@ -409,6 +411,7 @@ public class Operaciones {
 				// System.out.println("Lado Izquierdo DF " + FD1.getLeft());
 				if (Izq.equals(FD1.getLeft())) {
 					nuevaR.add(FD1);
+					atributos.removeAll(FD1.getRight());
 					System.out.println("Agregada la DF " + FD1);
 
 				}
@@ -416,9 +419,11 @@ public class Operaciones {
 			}
 			resultado.add(nuevaR);
 			// System.out.println("Agregada al resultado " + nuevaR);
+			
 		}
-
+		
 		resultado.add(temp3);
+		//How to add "atributos"
 
 		return resultado;
 
