@@ -14,10 +14,15 @@ import java.awt.Point;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+
 import javax.swing.JOptionPane;
 import DatosXpath.NodosXPath;
 import Ventanas.VentanaPrincipal;
+import operaciones.Atributos;
+import operaciones.FuncDep;
 
 public class PanelGrafo extends javax.swing.JPanel {
 
@@ -84,8 +89,18 @@ public class PanelGrafo extends javax.swing.JPanel {
 							// System.out.println(nombre);
 							n.setNombre(nombre);
 							n.setPunto(e.getPoint());
+							String[] NewAT1 = nombre.split(",");
+							Set<Atributos> NewAT = Atributos.getSet(NewAT1);
+							for (Atributos n2 : NewAT) {
+								if (!NodosXPath.attrs.contains(n2)) {
+									NodosXPath.attrs.add(n2);
+									NodosXPath.VerificarAtributo(atributos.size() + 1, n2.getnombre());
+								}
+								
+							}
 							nodos.add(n);// agregamos ala lista
-							NodosXPath.VerificarAtributo(atributos.size() + 1, nombre);
+							
+							
 
 						}
 					} catch (Exception ex) {
@@ -138,7 +153,13 @@ public class PanelGrafo extends javax.swing.JPanel {
 
 								a.setPeso(p);// guardamos el peso
 								arcos.add(a);// Guardamos el arco en la lista de arcos
-								VentanaPrincipal.PonerTextoDF(origen.getNombre(), destino.getNombre());
+								FuncDep NewFD = FuncDep.of(origen.getNombre().toString(), destino.getNombre().toString());
+								if(!NodosXPath.fds.contains(NewFD)){
+									VentanaPrincipal.PonerTextoDF(origen.getNombre(), destino.getNombre());
+									NodosXPath.fds.add(NewFD);
+									String node1 = origen.getNombre().toString() + "-->" + destino.getNombre().toString();
+								}
+																
 								origen = null;
 								destino = null;
 							}

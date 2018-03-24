@@ -20,6 +20,18 @@ public final class Atributos {
 		nombre = nombre.replaceAll("\\s+", "");
 		return getSet(nombre.split(","));
 	}
+	public static Set<Set<Atributos>> getSetset(String[] arreglo) {
+		Set<Set<Atributos>> attrs = new HashSet<>();
+		for (String s : arreglo) {
+			Set<Atributos> s1 = new HashSet<>();
+			if (!s.equals("") && !s.equals(" ")) {
+			s = s.replaceAll("\\s+", "");
+			s1 = getSet(s.split(","));
+			}
+			attrs.add(s1);
+		}
+		return attrs;
+	}
 
 	/**
 	 * 

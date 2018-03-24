@@ -207,10 +207,16 @@ public class VentanaPrincipal extends JFrame {
 
 		});
 		
+		JButton FNBCodd = new JButton("FNBC");
+		
+		FNBCodd.setFont(new Font("Calibri", Font.PLAIN, 11));
+		FNBCodd.setBounds(275, 48, 87, 23);
+		contentPane.add(FNBCodd);
+		
 		JButton btnBernstein = new JButton("Bernstein");
 		
 		btnBernstein.setFont(new Font("Calibri", Font.PLAIN, 11));
-		btnBernstein.setBounds(339, 49, 103, 23);
+		btnBernstein.setBounds(371, 49, 87, 23);
 		contentPane.add(btnBernstein);
 
 		JButton btnGenerarScript = new JButton("Script");
@@ -477,10 +483,9 @@ public class VentanaPrincipal extends JFrame {
 		btnRmin.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 
-				String[] dependXML = new String[NodosXPath.dependences.size()];
-				dependXML = NodosXPath.dependences.toArray(dependXML);
+				
 
-				Set<FuncDep> fdCarg = FuncDep.getSet(dependXML);
+				Set<FuncDep> fdCarg = NodosXPath.fds;
 				Set<FuncDep> L0 = Operaciones.l0(fdCarg);
 				// System.out.println(" L0= " + L0);
 				Set<FuncDep> L1 = Operaciones.getL1(L0);
@@ -498,9 +503,17 @@ public class VentanaPrincipal extends JFrame {
 			}
 		});
 		btnRmin.setFont(new Font("Calibri", Font.PLAIN, 11));
-		btnRmin.setBounds(451, 49, 94, 23);
-		btnRmin.setEnabled(false);
+		btnRmin.setBounds(467, 49, 94, 23);
 		contentPane.add(btnRmin);
+		FNBCodd.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				Set<FuncDep> l2 = new HashSet<>();
+				Set<Atributos> attrs = new HashSet<>();
+				l2 = Operaciones.getl2(Operaciones.getL1(Operaciones.l0(NodosXPath.fds)));
+				attrs = NodosXPath.attrs;
+				textArea.setText(Operaciones.FNBC(l2, attrs).toString());
+			}
+		});
 		btnBernstein.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				textArea.setText(EjecutarBernstein());
@@ -509,16 +522,16 @@ public class VentanaPrincipal extends JFrame {
 		btnClaves.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 
-				String[] dependXML = new String[NodosXPath.dependences.size()];
-				dependXML = NodosXPath.dependences.toArray(dependXML);
-
-				Set<FuncDep> fdCarg = FuncDep.getSet(dependXML);
+				
+				Set<FuncDep> fdCarg = NodosXPath.fds;
 				Set<FuncDep> L0 = Operaciones.l0(fdCarg);
 				System.out.println(" L0= " + L0);
 				Set<FuncDep> L1 = Operaciones.getL1(L0);
 				Set<FuncDep> L2 = Operaciones.getl2(L1);
 				Set<Atributos> Obligatorios = new HashSet<>(NodosXPath.attrs);
+				Set<Set<Atributos>> Todas = new HashSet<>();
 				Set<Atributos> Implicados = new HashSet<>();
+				Todas.addAll(Operaciones.TodasLasLlaves(L2, NodosXPath.attrs));
 				for (FuncDep fd : L2) {
 					Implicados.addAll(fd.getRight());
 					Implicados.addAll(fd.getLeft());
@@ -526,10 +539,10 @@ public class VentanaPrincipal extends JFrame {
 				Obligatorios.removeAll(Implicados);
 				System.out.println("OBLIGATORIOS " + Obligatorios);
 				String Result = "Conjunto de SuperLlaves " + '\n' + "===============================" + '\n'
-						+ Operaciones.TodasLasLlaves(L2, NodosXPath.attrs) + '\n' + '\n';
+						+ Todas + '\n' + '\n';
 				Operaciones.candid.clear();
 				String Result2 = "Conjunto de Llaves Candidatas " + '\n' + "===============================" + '\n'
-						+ Operaciones.LlavesCandidatas(L2, Obligatorios, NodosXPath.attrs);
+						+ Operaciones.LlavesCandidatas(Todas, L2, Obligatorios, NodosXPath.attrs);
 
 				textArea.setText(Result + Result2);
 				/*
@@ -543,7 +556,6 @@ public class VentanaPrincipal extends JFrame {
 		});
 		btnClaves.setFont(new Font("Calibri", Font.PLAIN, 11));
 		btnClaves.setBounds(668, 49, 134, 23);
-		btnClaves.setEnabled(false);
 		contentPane.add(btnClaves);
 
 		JButton btnProyeccion = new JButton("Proyeccion");
@@ -560,7 +572,7 @@ public class VentanaPrincipal extends JFrame {
 			}
 		});
 		btnProyeccion.setFont(new Font("Calibri", Font.PLAIN, 11));
-		btnProyeccion.setBounds(555, 49, 103, 23);
+		btnProyeccion.setBounds(571, 49, 87, 23);
 		contentPane.add(btnProyeccion);
 
 		JButton btnBorrar = new JButton("Borrar");
@@ -612,12 +624,19 @@ public class VentanaPrincipal extends JFrame {
 		DefaultTableModel modeloDF = (DefaultTableModel) DFTable.getModel();
 		modeloDF.getDataVector().removeAllElements();
 		modeloDF.fireTableDataChanged();
+		
+		DefaultTableModel modeloProyeccion = (DefaultTableModel) tableProyeccion.getModel();
+		modeloProyeccion.getDataVector().removeAllElements();
+		modeloProyeccion.fireTableDataChanged();
 
 		Grafo.PanelGrafo.nodos.clear();
 		Grafo.PanelGrafo.arcos.clear();
 		Grafo.PanelGrafo.nodosD.clear();
 		Grafo.PanelGrafo.nodosI.clear();
 		Grafo.PanelGrafo.atributos.clear();
+		NodosXPath.attrs.clear();
+		NodosXPath.fds.clear();
+	
 		yi = 0;
 
 	}
@@ -665,7 +684,9 @@ public class VentanaPrincipal extends JFrame {
 			Oblig.removeAll(f.getLeft());
 			Oblig.removeAll(f.getRight());
 		}
-		Llc.addAll(Operaciones.LlavesCandidatas(Minimal, Oblig, NodosXPath.attrs));
+		Set<Set<Atributos>> Ll1 = new HashSet<>();
+		Ll1.addAll(Operaciones.TodasLasLlaves(Minimal, NodosXPath.attrs));
+		Llc.addAll(Operaciones.LlavesCandidatas(Ll1, Minimal, Oblig, NodosXPath.attrs));
 		Res = Res + "Llave(s) Candidata(s): " + Llc + "\n ==================================== \n Subconjuntos: \n";
 		Resultado.addAll(Operaciones.AlgBernstein(NodosXPath.fds));
 		int i = 1;
@@ -679,7 +700,9 @@ public class VentanaPrincipal extends JFrame {
 				Todos1.addAll(r2.getRight());
 			}
 			Operaciones.candid.clear();
-			Llc1.addAll(Operaciones.LlavesCandidatas(r1, Obl1, Todos1));
+			Set<Set<Atributos>> Ll2 = new HashSet<>();
+			Ll2.addAll(Operaciones.TodasLasLlaves(r1, Todos1));
+			Llc1.addAll(Operaciones.LlavesCandidatas(Ll2, r1, Obl1, Todos1));
 			System.out.println("Conjunto DFs " + r1 + " Obl " + Obl1 + " Todos " + Todos1 + " Llaves " + Llc1);
 			Res = Res + "Llave(s) Candidata(s): " + Llc1 + "\n ---------------------------------- \n";
 		i++;
