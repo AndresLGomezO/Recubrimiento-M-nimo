@@ -3,6 +3,9 @@ package Ventanas;
 import DatosXpath.NodosXPath;
 
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.PrintWriter;
+import java.io.UnsupportedEncodingException;
 import java.util.HashSet;
 import java.util.Set;
 import java.awt.EventQueue;
@@ -253,11 +256,73 @@ public class VentanaPrincipal extends JFrame {
 		contentPane.add(btnBernstein);
 
 		JButton btnGenerarScript = new JButton("Script");
+		btnGenerarScript.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				Set<FuncDep> l2 = new HashSet<>();
+				l2 = Operaciones.getl2(Operaciones.getL1(Operaciones.l0(NodosXPath.fds)));
+				Set<Set<FuncDep>> Brn = new HashSet<>();
+				Brn = Operaciones.AlgBernstein(l2);
+				String ct = "CREATE TABLE";
+				String Resultado = "";
+				int i = 1;
+				for (Set<FuncDep> Brn1 : Brn) {
+					Set<Set<Atributos>> TodasLl = new HashSet<>();
+					Set<Atributos> Todos = new HashSet<>();
+					Set<Atributos> Obligatorios = new HashSet<>();
+					for (FuncDep a : Brn1) {
+						Todos.addAll(a.getLeft());
+						Todos.addAll(a.getRight());
+					}
+					
+					TodasLl = Operaciones.TodasLasLlaves(Brn1, Todos);
+					
+					Set<Atributos> repetidos = new HashSet<>();
+					Resultado = Resultado + ct + " Relacion" + i + "( \n";
+					for (FuncDep Brn2 : Brn1) {
+						for (Atributos Brn3 : Brn2.getLeft()) {
+							if (!repetidos.contains(Brn3)) {
+								Resultado = Resultado + Brn3 + " VARCHAR(10) NOT NULL, \n";
+								repetidos.add(Brn3);
+							}
+							
+						}
+						
+						Resultado = Resultado + Brn2.getRight().toString().replace("[", "").replace("]", "") + " VARCHAR(10) NOT NULL, \n";
+						
+					}
+					Resultado = Resultado.substring(0, Resultado.length()-3);
+					Resultado = Resultado + "\n ); \n \n";
+					Resultado = Resultado + " ALTER TABLE Relacion" + i + " ADD CONSTRAINT PK"+i + " PRIMARY KEY(" + Operaciones.LlavesCandidatas(TodasLl, Brn1, Obligatorios, Todos).toString().replace("[", "").replace("]", "") +"); \n \n";
+					i++;
+				}
+				System.out.println("Resultado " + Resultado);
+				PrintWriter w;
+				try {
+					w = new PrintWriter("ScriptSQL.sql", "UTF-8");
+					w.println(Resultado);
+					w.close();
+				} catch (FileNotFoundException | UnsupportedEncodingException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+				
+			}
+		});
 		btnGenerarScript.setFont(new Font("Calibri", Font.PLAIN, 11));
 		btnGenerarScript.setBackground(new Color(135, 206, 250));
 		btnGenerarScript.setBounds(114, 48, 76, 23);
 		contentPane.add(btnGenerarScript);
 
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
 		JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
 		// tabbedPane.setSelectedIndex(2);
 		tabbedPane.setBounds(10, 83, 870, 400);
